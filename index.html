@@ -3,113 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Casino Skiperino - Live Syndicate</title>
+    <title>Casino Skiperino - High Limit Lounge</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        /* --- DARK SURREALISM / Elite Horror DESIGN --- */
+        /* --- HIGH LIMIT SPORTSBOOK DESIGN --- */
         body {
             color: #ddd; font-family: 'Montserrat', sans-serif; margin: 0; padding: 20px;
-            min-height: 100vh; background-color: #0d0d0d;
-            background-image: radial-gradient(circle at center, #1a080a 0%, #080808 100%);
+            min-height: 100vh; background-color: #050505;
+            background-image: radial-gradient(circle at center, #2b0c0c 0%, #050505 80%);
             overflow-x: hidden;
         }
 
-        body::before {
-            content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Charlie_Kirk_by_Gage_Skidmore_2.jpg/800px-Charlie_Kirk_by_Gage_Skidmore_2.jpg');
-            background-size: cover; background-position: center 20%;
-            z-index: -2; opacity: 0.1; filter: sepia(0.8) hue-rotate(-20deg); pointer-events: none;
-        }
+        .diamond-logo { text-align: center; font-size: 3em; margin-bottom: -15px; text-shadow: 0 0 20px rgba(0, 150, 255, 0.5); }
 
         h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; text-align: center; margin-top: 0; }
 
         h1 {
-            font-family: 'Playfair Display', serif; font-style: italic; color: #d4af37;
-            font-size: 4em; font-weight: 700; text-shadow: 2px 2px 0px #3d0000, 4px 4px 0px #000, 0 0 30px rgba(212, 175, 55, 0.4);
+            font-family: 'Playfair Display', serif; font-style: italic; color: #ffdf00;
+            font-size: 4em; font-weight: 700; text-shadow: 2px 2px 0px #3d0000, 0 0 20px rgba(255, 223, 0, 0.4);
             margin-bottom: 5px; letter-spacing: 2px;
         }
-        h1::before, h1::after { content: '♦ ♣ ♥ ♠'; font-size: 0.3em; color: #8b0000; text-shadow: 0 0 10px #ff0000, 1px 1px 0 #000; vertical-align: middle; margin: 0 15px; font-style: normal; }
+        h1::before, h1::after { content: '♦ ♣ ♥ ♠'; font-size: 0.3em; color: #ff0000; text-shadow: 0 0 10px #ff0000, 1px 1px 0 #000; vertical-align: middle; margin: 0 15px; font-style: normal; }
 
-        h3 { color: #d4af37; font-size: 1.6em; border-bottom: 1px solid #4a3c18; padding-bottom: 10px; margin-bottom: 20px; letter-spacing: 2px; }
-        hr { border: 1px solid #3d0000; margin: 25px 0; opacity: 0.8; }
+        .header-subtitle { text-align: center; font-family: 'Montserrat', sans-serif; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; font-size: 0.9em; color: #aaa; margin-bottom: 30px; position: relative; z-index: 1; }
 
         .container { display: none; gap: 25px; max-width: 1300px; margin: 0 auto; position: relative; z-index: 1; }
         .main-col { flex: 2.2; min-width: 0; }
         .side-col { flex: 1; min-width: 0; }
 
+        /* GREEN/GOLD CARDS */
         .card {
-            background: linear-gradient(145deg, #111 0%, #050505 100%); padding: 25px; border-radius: 8px; 
-            margin-bottom: 25px; border: 1px solid #33270f; box-shadow: inset 0 0 20px rgba(0,0,0,1), 0 15px 30px rgba(0,0,0,0.9), 0 0 0 2px #1a1a1a; position: relative;
+            background-color: #0a170a; padding: 25px; border-radius: 8px; 
+            margin-bottom: 25px; border: 2px solid #d4af37; box-shadow: 0 10px 30px rgba(0,0,0,0.9); position: relative;
         }
-        .card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #d4af37, transparent); opacity: 0.5; }
 
-        .history-badge { display: inline-block; padding: 8px 15px; margin: 5px; border-radius: 3px; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.8); font-size: 1.1em; min-width: 80px; text-align: center; border: 1px solid rgba(255,255,255,0.1); }
-        .history-skip { background: linear-gradient(180deg, #660000 0%, #2b0000 100%); border-bottom: 2px solid #ff3333; }
-        .history-daily { background: linear-gradient(180deg, #004d00 0%, #001a00 100%); border-bottom: 2px solid #33cc33; }
-        .history-date { font-size: 0.7em; display: block; color: #888; margin-top: 4px; font-family: 'Montserrat', sans-serif; }
+        h3 { color: #d4af37; font-size: 1.4em; border-bottom: 1px dashed #d4af37; padding-bottom: 10px; margin-bottom: 20px; letter-spacing: 2px; }
+        hr { border: 1px dashed #d4af37; margin: 20px 0; opacity: 0.5; }
 
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 1em; }
-        th, td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.1); }
-        th { color: #888; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px solid #d4af37; }
-        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
+        .history-badge { display: inline-block; padding: 8px 15px; margin: 5px; border-radius: 3px; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; color: #fff; box-shadow: 0 4px 6px rgba(0,0,0,0.8); font-size: 1.1em; min-width: 80px; text-align: center; border: 1px solid rgba(255,255,255,0.2); }
+        .history-skip { background: linear-gradient(180deg, #cc0000 0%, #660000 100%); border-bottom: 2px solid #ff3333; }
+        .history-daily { background: linear-gradient(180deg, #008000 0%, #004d00 100%); border-bottom: 2px solid #33cc33; }
+        .history-date { font-size: 0.6em; display: block; color: #ddd; margin-top: 4px; font-family: 'Montserrat', sans-serif; letter-spacing: 1px;}
 
-        label { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #888; font-size: 0.9em; display: block; margin-bottom: 5px; letter-spacing: 1px; }
-        input, select { width: 100%; padding: 12px; margin-bottom: 20px; box-sizing: border-box; background-color: #000; color: #d4af37; border: 1px solid #33270f; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 1em; }
-        input:focus, select:focus { outline: none; border-color: #d4af37; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.95em; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        th { color: #88ff88; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px dashed #d4af37; }
+        tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.03); }
 
-        button { background: linear-gradient(180deg, #d4af37 0%, #8b6508 100%); color: #000; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border: 1px solid #ffdf00; border-radius: 4px; padding: 15px 20px; cursor: pointer; width: 100%; font-size: 1.2em; transition: all 0.2s ease; }
-        button:hover { filter: brightness(1.2); }
+        label { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #aaa; font-size: 0.85em; display: block; margin-bottom: 5px; letter-spacing: 1px; }
+        input, select { width: 100%; padding: 10px; margin-bottom: 20px; box-sizing: border-box; background-color: #050a05; color: #fff; border: 1px solid #d4af37; border-radius: 4px; font-family: 'Montserrat', sans-serif; font-size: 1em; outline: none;}
+        input:focus, select:focus { border-color: #ffdf00; box-shadow: 0 0 10px rgba(212,175,55,0.3); }
+
+        /* PILL BUTTONS */
+        button { font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; border-radius: 30px; padding: 15px 20px; cursor: pointer; width: 100%; font-size: 1.1em; transition: all 0.2s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        button:hover { filter: brightness(1.2); transform: translateY(-2px); }
         
-        .dl-btn { background: linear-gradient(180deg, #222 0%, #000 100%); color: #888; border-color: #333; margin-top: 10px; font-size: 0.9em; }
-        .danger-btn { background: linear-gradient(180deg, #4d0000 0%, #1a0000 100%); color: #ff4d4d; border-color: #660000; margin-top: 20px; font-size: 0.9em; }
-        .cancel-btn { background: transparent; color: #888; border: 1px solid #444; border-radius: 3px; padding: 5px 10px; font-size: 0.8em; width: auto; }
+        .btn-gold { background: linear-gradient(180deg, #ffdf00 0%, #b8860b 100%); color: #000; border: 2px solid #fff; }
+        .btn-silver { background: linear-gradient(180deg, #ffffff 0%, #999999 100%); color: #000; border: 2px solid #fff; margin-top: 10px;}
+        .btn-dark { background: linear-gradient(180deg, #333 0%, #000 100%); color: #ffdf00; border: 1px solid #d4af37; margin-top: 10px; font-size: 0.9em; }
+        .btn-red { background: linear-gradient(180deg, #ff4d4d 0%, #990000 100%); color: #fff; border: 2px solid #fff; margin-top: 20px; }
+        .cancel-btn { background: transparent; color: #aaa; border: 1px solid #555; border-radius: 20px; padding: 5px 10px; font-size: 0.8em; width: auto; box-shadow: none;}
 
-        .header-subtitle { text-align: center; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 5px; font-size: 1.1em; color: #888; margin-bottom: 30px; position: relative; z-index: 1; }
-        .streak-counter { color: #888; background: #000; padding: 10px 20px; border-radius: 4px; border: 1px solid #33270f; display: inline-block; font-family: 'Oswald', sans-serif; }
-        .streak-number { color: #d4af37; font-weight: bold; font-size: 1.2em; }
+        .streak-counter { color: #aaa; background: #000; padding: 5px 15px; border-radius: 20px; border: 1px solid #d4af37; display: inline-block; font-family: 'Oswald', sans-serif; font-size: 0.9em; margin-bottom: 20px;}
+        .streak-number { color: #ff4d4d; font-weight: bold; font-size: 1.2em; }
 
-        .odds-container { display: flex; gap: 15px; justify-content: space-around; margin-top: 20px; }
-        .odds-box { flex: 1; background: #000; padding: 20px; border-radius: 6px; text-align: center; border: 1px solid #222; }
-        .odds-label { font-family: 'Oswald', sans-serif; font-size: 1em; color: #555; margin-bottom: 10px; letter-spacing: 2px; }
-        .odds-value { display: flex; justify-content: center; align-items: baseline; color: #d4af37; font-size: 3.5em; font-weight: 700; font-family: 'Oswald', sans-serif; }
+        .odds-container { display: flex; gap: 15px; justify-content: space-around; margin-top: 10px; }
+        .odds-box { flex: 1; background: #050a05; padding: 20px; border-radius: 6px; text-align: center; border: 1px solid #d4af37; box-shadow: inset 0 0 15px #000; }
+        .odds-label { font-family: 'Oswald', sans-serif; font-size: 0.9em; color: #888; margin-bottom: 10px; letter-spacing: 2px; }
+        .odds-value { display: flex; justify-content: center; align-items: baseline; color: #fff; font-size: 3.5em; font-weight: 700; font-family: 'Oswald', sans-serif; }
         
         /* CLEAN ODDS INPUT CSS */
         .odds-input { 
-            background: transparent; border: none; border-bottom: 1px solid #33270f; 
-            color: #d4af37; font-size: 1em; font-weight: 700; font-family: inherit; 
+            background: transparent; border: none; border-bottom: 1px solid #555; 
+            color: #fff; font-size: 1em; font-weight: 700; font-family: inherit; 
             text-align: center; width: 140px; outline: none; 
-            padding: 0; line-height: 1.2; height: 1.2em;
+            padding: 0; line-height: 1.2; height: 1.2em; margin: 0; box-shadow: none;
         }
         .odds-input::-webkit-outer-spin-button,
-        .odds-input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        .odds-input[type=number] {
-            -moz-appearance: textfield;
-        }
+        .odds-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .odds-input[type=number] { -moz-appearance: textfield; }
         .odds-input[readonly] { border-bottom: none; }
-        .odds-x { font-size: 0.5em; color: #666; margin-left: 5px; }
+        .odds-x { font-size: 0.5em; color: #ffdf00; margin-left: 5px; }
 
         /* LOGIN OVERLAY */
-        #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0a0a0a; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .login-box { background: #111; padding: 40px; border: 1px solid #d4af37; border-radius: 8px; width: 350px; text-align: center; box-shadow: 0 0 50px rgba(212, 175, 55, 0.1); }
+        #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(5,5,5,0.95); z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-box { background: #0a170a; padding: 40px; border: 2px solid #d4af37; border-radius: 8px; width: 350px; text-align: center; box-shadow: 0 0 50px rgba(212, 175, 55, 0.2); }
         .auth-toggle { color: #888; margin-top: 15px; cursor: pointer; text-decoration: underline; font-size: 0.9em; }
         
         #pitbossPanel { display: none; }
-        .loading-text { color: #d4af37; font-family: 'Oswald', sans-serif; font-size: 1.5em; display: none; }
+        .loading-text { color: #ffdf00; font-family: 'Oswald', sans-serif; font-size: 1.5em; display: none; }
     </style>
 </head>
 <body>
 
     <div id="loginOverlay">
+        <div class="diamond-logo">💎</div>
         <h1 style="font-size: 3em; margin-bottom: 30px;">Casino Skiperino</h1>
         <div class="login-box">
             <h3 id="authTitle" style="border:none; margin-bottom: 5px;">Enter The Vault</h3>
-            <p style="color: #666; margin-bottom: 20px; font-size: 0.9em;">Authorized personnel only.</p>
+            <p style="color: #888; margin-bottom: 20px; font-size: 0.9em;">Authorized personnel only.</p>
             
             <input type="email" id="authEmail" placeholder="Email Address">
             <input type="password" id="authPassword" placeholder="Password">
@@ -119,16 +114,17 @@
                 <select id="authPlayerName"></select>
             </div>
 
-            <button id="authBtn" onclick="handleAuth()">Login</button>
+            <button class="btn-gold" id="authBtn" onclick="handleAuth()">Login</button>
             <div class="auth-toggle" id="authToggleBtn" onclick="toggleAuthMode()">Need an account? Register here.</div>
-            <div id="authError" style="color: #ff3333; margin-top: 15px; font-size: 0.9em;"></div>
+            <div id="authError" style="color: #ff4d4d; margin-top: 15px; font-size: 0.9em;"></div>
         </div>
         <div class="loading-text" id="syncingText">Syncing with Syndicate Database...</div>
     </div>
 
     <div id="mainDashboard">
+        <div class="diamond-logo">💎</div>
         <h1 style="margin-top: 20px;">Casino Skiperino</h1>
-        <div class="header-subtitle">Elite Syndicate Lounge <span id="currentUserLabel" style="color:#d4af37;"></span></div>
+        <div class="header-subtitle">High Limit Sportsbook Lounge <span id="currentUserLabel" style="color:#ffdf00;"></span></div>
         
         <div class="container" id="appContainer">
             <div class="main-col">
@@ -157,7 +153,7 @@
                 </div>
 
                 <div class="card" style="text-align: center; padding: 15px;">
-                    <h3 style="font-size: 1.2em; border: none; margin-bottom: 15px; color: #888;">⏪ Past 5 Days Trend</h3>
+                    <h3 style="font-size: 1.2em; border: none; margin-bottom: 15px; color: #fff;">⏪ Past 5 Days Trend</h3>
                     <div id="past5container"></div>
                 </div>
 
@@ -180,15 +176,15 @@
                         <option value="SKIP">MEETING IS SKIPPED</option>
                     </select>
 
-                    <button onclick="placeBet()">Place Bet on Felt</button>
-                    <div id="betError" style="color: #ff3333; margin-top: 15px; text-align: center;"></div>
+                    <button class="btn-gold" onclick="placeBet()">Place Bet on Felt</button>
+                    <div id="betError" style="color: #ff4d4d; margin-top: 15px; text-align: center;"></div>
                 </div>
 
                 <div class="card">
                     <h3>🎟️ Active Bets Slip</h3>
                     <table id="betsTable">
                         <thead>
-                            <tr><th>Player</th><th>Prediction</th><th>Amount</th><th>Win</th><th>Action</th></tr>
+                            <tr><th>Player</th><th>Prediction</th><th>Amount</th><th>Potent. Win</th><th>Action</th></tr>
                         </thead>
                         <tbody id="betsTableBody"></tbody>
                     </table>
@@ -200,34 +196,35 @@
                     <h3>🏆 Leaderboard</h3>
                     <table>
                         <thead>
-                            <tr><th>Rank</th><th>Player</th><th>Coins</th><th>Streak</th></tr>
+                            <tr><th>Rank</th><th>Player</th><th>Cojke<br>Coins</th><th>Streak</th></tr>
                         </thead>
                         <tbody id="leaderboardBody"></tbody>
                     </table>
                 </div>
 
                 <div class="card" id="pitbossPanel">
-                    <h3 style="color: #ff3333;">🛠️ Pit Boss Panel</h3>
+                    <h3 style="color: #ff4d4d;">🛠️ Pit Boss Panel</h3>
                     <label>Input Today's Outcome:</label>
                     <select id="actualOutcome">
                         <option value="DAILY">DAILY MEETING (Happened)</option>
                         <option value="SKIP">SKIP (Didn't happen)</option>
                     </select>
-                    <button onclick="resolveDay()" style="background: #4d0000; color:#fff; border-color:#ff3333;">Pay Out & Settle</button>
+                    <button class="btn-gold" onclick="resolveDay()">Pay Out & Settle</button>
                     
                     <hr>
                     <label>Manual Coin Adjustment</label>
                     <select id="adjPlayer"></select>
                     <input type="number" id="adjAmount" placeholder="e.g. 500 or -500">
-                    <button onclick="adjustCoins()" style="background: #222; color: #888; border-color: #444;">Force Balance</button>
+                    <button class="btn-silver" onclick="adjustCoins()">Adjust Balance</button>
                     
                     <hr>
-                    <button class="dl-btn" onclick="saveOdds()">💾 Force Save Custom Odds</button>
+                    <button class="btn-dark" onclick="downloadLog()">💾 Download Full Log</button>
+                    <button class="btn-red" onclick="nuclearReset()">Nuclear Reset</button>
                 </div>
-                <button class="cancel-btn" style="margin-top:20px; width:100%;" onclick="logOut()">Sign Out</button>
+                <button class="cancel-btn" style="margin-top:20px; width:100%; border:none; text-decoration:underline;" onclick="logOut()">Sign Out</button>
             </div>
         </div>
-        <div style="text-align: center; color: #555; font-size: 0.85em; padding: 30px 0;">
+        <div style="text-align: center; color: #666; font-size: 0.75em; padding: 30px 0;">
             Casino Skiperino © 2026. Play irresponsibly. Property of Charlie Kirk.
         </div>
     </div>
@@ -253,7 +250,7 @@
         const db = getFirestore(app);
 
         // --- CORE SYSTEM VARIABLES ---
-        const ADMIN_EMAIL = "pitboss@skiperino.com"; // REGISTER WITH THIS FOR ADMIN POWERS
+        const ADMIN_EMAIL = "pitboss@skiperino.com"; 
         const playersList = ["Shomara", "Nenad", "Sladja", "Cojkana", "Milance", "Danilo", "OG", "rat.cleaner", "KOL", "Markov", "Shobibi", "Skecmi"];
         
         let currentUser = null;
@@ -262,7 +259,7 @@
         let isLoginMode = true;
         let state = null; 
 
-        // UPGRADED 57-DAY MATHEMATICAL BASELINE DATA
+        // 57-DAY ACCURATE MATHEMATICAL BASELINE
         const initialState = {
             balances: { "Shomara": 1058.50, "Nenad": 1037.00, "Sladja": 1006.00, "Cojkana": 851.00, "Milance": 845.50, "Danilo": 800.00, "OG": 750.90, "rat.cleaner": 700.00, "KOL": 600.00, "Markov": 549.00, "Shobibi": 300.00, "Skecmi": 0.00 },
             streaks: { "Shomara": 1, "Nenad": 1, "Sladja": 2, "Cojkana": 0, "Milance": 0, "Danilo": 0, "OG": 0, "rat.cleaner": 0, "KOL": 0, "Markov": 0, "Shobibi": 0, "Skecmi": 0 }, 
@@ -427,6 +424,28 @@
             }
         };
 
+        // --- NEW PIT BOSS POWERS ---
+        window.downloadLog = () => {
+            if (!isAdmin) return;
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(state, null, 2));
+            const downloadAnchorNode = document.createElement('a');
+            downloadAnchorNode.setAttribute("href",     dataStr);
+            downloadAnchorNode.setAttribute("download", "casino_skiperino_ledger.json");
+            document.body.appendChild(downloadAnchorNode);
+            downloadAnchorNode.click();
+            downloadAnchorNode.remove();
+        };
+
+        window.nuclearReset = async () => {
+            if (!isAdmin) return;
+            if (confirm("☢️ WARNING: This will erase all current balances, active bets, and recent history. Are you absolutely sure?")) {
+                if (confirm("FINAL WARNING: This action cannot be undone. Initiate Nuclear Reset?")) {
+                    await setDoc(doc(db, "casino", "state"), initialState);
+                    alert("Casino has been completely reset to the June 19th baseline.");
+                }
+            }
+        };
+
         // ADMIN ONLY FUNCTIONS
         window.resolveDay = async () => {
             if (!isAdmin) return;
@@ -467,7 +486,7 @@
             if (d.getDay() === 6) d.setDate(d.getDate() + 2); 
             state.currentDate = d.getTime();
 
-            // Recalculate odds
+            // Recalculate odds with edge
             let baseProb = state.history[d.getDay()] ? (state.history[d.getDay()].daily / state.history[d.getDay()].total) : 0.50;
             let p_daily = Math.max(0.05, Math.min(baseProb + (state.skipStreak * 0.10), 0.95));
             state.currentOdds.daily = (0.95 / p_daily).toFixed(2);
@@ -492,7 +511,6 @@
             state.currentOdds.daily = document.getElementById('quotaDaily').value;
             state.currentOdds.skip = document.getElementById('quotaSkip').value;
             await pushStateToCloud();
-            alert("Custom Odds Locked In.");
         }
 
         // --- RENDER ENGINE ---
@@ -508,31 +526,37 @@
             document.getElementById('displayDate').innerText = "📅 " + d.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
             document.getElementById('displayStreak').innerText = state.skipStreak;
             
-            // Odds render fixed to display for both Admin and Players
-            document.getElementById('quotaDaily').value = state.currentOdds.daily;
-            document.getElementById('quotaSkip').value = state.currentOdds.skip;
+            // Allow odds input editing for Admin, push live numbers to standard users
+            if(document.activeElement !== document.getElementById('quotaDaily')) document.getElementById('quotaDaily').value = state.currentOdds.daily;
+            if(document.activeElement !== document.getElementById('quotaSkip')) document.getElementById('quotaSkip').value = state.currentOdds.skip;
+
+            // Auto-save odds if admin types in the boxes
+            if(isAdmin) {
+                document.getElementById('quotaDaily').addEventListener('change', saveOdds);
+                document.getElementById('quotaSkip').addEventListener('change', saveOdds);
+            }
 
             const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
             document.getElementById('leaderboardBody').innerHTML = sortedPlayers.map((p, i) => `
                 <tr>
                     <td>${i === 0 ? "👑 1" : i + 1}</td>
                     <td>${p}</td>
-                    <td><span class="coin-icon">🪙</span>${state.balances[p].toFixed(2)}</td>
-                    <td style="color: ${state.streaks[p] > 0 ? '#d4af37' : '#555'}; font-weight: bold;">${state.streaks[p] >= 3 ? '🔥 ' + state.streaks[p] : state.streaks[p] || 0}</td>
+                    <td style="color: #ffdf00;">${state.balances[p].toFixed(2)}</td>
+                    <td style="color: ${state.streaks[p] > 0 ? '#ffdf00' : '#555'}; font-weight: bold;">${state.streaks[p] >= 3 ? '🔥 ' + state.streaks[p] : state.streaks[p] || 0}</td>
                 </tr>`).join('');
 
             const tbodyB = document.getElementById('betsTableBody');
             if (state.bets.length === 0) {
-                tbodyB.innerHTML = `<tr><td colspan="5" style="color: #444; padding: 20px;">No chips on the felt.</td></tr>`;
+                tbodyB.innerHTML = `<tr><td colspan="5" style="color: #444; padding: 20px;">No chips on the felt. Place your bets.</td></tr>`;
             } else {
                 tbodyB.innerHTML = state.bets.map((b, i) => `
                     <tr>
                         <td>${b.player}</td>
-                        <td style="color: ${b.prediction === 'DAILY' ? '#4a824a' : '#8a3c3c'}; font-weight: bold;">${b.prediction}</td>
+                        <td style="color: ${b.prediction === 'DAILY' ? '#88ff88' : '#ff4d4d'}; font-weight: bold;">${b.prediction}</td>
                         <td>${b.amount}</td>
-                        <td style="color: #d4af37;">${b.win}</td>
+                        <td style="color: #ffdf00;">${b.win}</td>
                         <td>
-                            ${(isAdmin || b.player === currentUserPlayerName) ? `<button class="cancel-btn" onclick="cancelBet(${i})">Refund</button>` : `<span style="color:#444; font-size:0.8em;">Locked</span>`}
+                            ${(isAdmin || b.player === currentUserPlayerName) ? `<button class="cancel-btn" onclick="cancelBet(${i})">Refund</button>` : `<span style="color:#555; font-size:0.8em;">Locked</span>`}
                         </td>
                     </tr>`).join('');
             }
