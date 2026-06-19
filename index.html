@@ -211,7 +211,7 @@
         }
         .slot-cabinet { background: radial-gradient(circle, #3a1515 0%, #0c0202 100%); border: 5px double #ffdf00; border-radius: 20px; padding: 30px; position: relative; box-shadow: 0 20px 40px rgba(0,0,0,0.9), inset 0 0 40px #000; text-align: center; }
         
-        /* HYPER FLASHY NEON JACKPOT DISPLAY */
+        /* CLEAN STATIC PREMIUM JACKPOT PANEL */
         .jackpot-ticker { 
             background: #000; 
             border: 4px solid #ffdf00; 
@@ -223,12 +223,8 @@
             font-weight: bold; 
             margin-bottom: 25px; 
             letter-spacing: 3px; 
-            box-shadow: 0 0 20px #ff3300, inset 0 0 25px rgba(255, 234, 0, 0.4);
-            animation: neonPulse 1.5s infinite alternate;
-        }
-        @keyframes neonPulse {
-            0% { text-shadow: 0 0 10px #fffb00, 0 0 20px #ff3300; border-color: #ffdf00; box-shadow: 0 0 15px #ff3300, inset 0 0 20px rgba(255, 234, 0, 0.3); }
-            100% { text-shadow: 0 0 20px #ffea00, 0 0 40px #ff0000; border-color: #fffb00; box-shadow: 0 0 30px #ff0000, inset 0 0 35px rgba(255, 234, 0, 0.6); }
+            box-shadow: inset 0 0 25px rgba(255, 234, 0, 0.2), 0 4px 15px rgba(0,0,0,0.6);
+            text-shadow: 0 0 10px #fffb00;
         }
         .champ-tag { font-size: 0.35em; color: #fff; display: block; font-family: 'Oswald', sans-serif; font-weight: normal; letter-spacing: 2px; margin-top: 5px; text-transform: uppercase; text-shadow: 1px 1px 2px #000; }
 
@@ -342,7 +338,7 @@
                     </select>
 
                     <button id="placeBetBtn" onclick="placeBet()">Place Bet on Felt</button>
-                    <button class="btn-arcade-nav" id="arcadeFloorToggleBtn" onclick="toggleArcadeFloor()">🎰 ENTER HIGH ROLLER ARCADE</button>
+                    <button class="btn-arcade-nav" id="arcadeFloorToggleBtn" onclick="toggleArcadeFloor()">🎰 ENTER TATA SLOT APARATA</button>
                     
                     <div id="betError" style="color: #ff3333; margin-top: 15px; text-align: center; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
                 </div>
@@ -385,11 +381,11 @@
                         <div class="paytable-card">
                             <label style="margin-bottom:10px; font-size:0.85em; text-align:center;">📋 CASINO PAYOUT MULTIPLIER LEGEND</label>
                             <div class="paytable-grid">
-                                <div class="paytable-item"><span class="paytable-sym">🍒🍒🍒</span><span class="paytable-mult">1.5x (1 in 4)</span></div>
-                                <div class="paytable-item"><span class="paytable-sym">🔔🔔🔔</span><span class="paytable-mult">1.2x (1 in 10)</span></div>
-                                <div class="paytable-item"><span class="paytable-sym">🔥🔥🔥</span><span class="paytable-mult">2.0x (1 in 20)</span></div>
-                                <div class="paytable-item"><span class="paytable-sym">🪙🪙🪙</span><span class="paytable-mult">2.5x (1 in 30)</span></div>
-                                <div class="paytable-item" style="border-color:#ffdf00; background:rgba(255,223,0,0.1);"><span class="paytable-sym">💎💎💎</span><span class="paytable-mult" style="color:#fffb00;">VAULT (1 in 50)</span></div>
+                                <div class="paytable-item"><span class="paytable-sym">🍒🍒🍒</span><span class="paytable-mult">0.6x</span></div>
+                                <div class="paytable-item"><span class="paytable-sym">🔔🔔🔔</span><span class="paytable-mult">1.2x</span></div>
+                                <div class="paytable-item"><span class="paytable-sym">🔥🔥🔥</span><span class="paytable-mult">2.0x</span></div>
+                                <div class="paytable-item"><span class="paytable-sym">🪙🪙🪙</span><span class="paytable-mult">2.5x</span></div>
+                                <div class="paytable-item" style="border-color:#ffdf00; background:rgba(255,223,0,0.1);"><span class="paytable-sym">💎💎💎</span><span class="paytable-mult" style="color:#fffb00;">VAULT JACKPOT</span></div>
                             </div>
                         </div>
                     </div>
@@ -514,11 +510,11 @@
             const btn = document.getElementById('arcadeFloorToggleBtn');
             if (isArcadeVisible) {
                 card.classList.add('visible');
-                btn.innerText = "⏪ LEAVE HIGH ROLLER ARCADE";
+                btn.innerText = "⏪ LEAVE TATA SLOT APARATA";
                 btn.style.background = "linear-gradient(to bottom, #555, #222)";
             } else {
                 card.classList.remove('visible');
-                btn.innerText = "🎰 ENTER HIGH ROLLER ARCADE";
+                btn.innerText = "🎰 ENTER TATA SLOT APARATA";
                 btn.style.background = "linear-gradient(to bottom, #ff00ea, #7a0068)";
             }
         };
@@ -663,7 +659,7 @@
             return false;
         }
 
-        // --- ONE ARMED BANDID MECHANICS INTEGRATION ---
+        // --- TATA SLOT SYSTEM CORE ENGINE ---
         window.spinSlots = async () => {
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             const stake = parseFloat(document.getElementById('slotBetSelection').value);
@@ -676,10 +672,9 @@
             }
 
             spinBtn.disabled = true;
-            statusBox.innerText = "🎰 Gears turning... Pulling handle!";
+            statusBox.innerText = "🎰 Pulling mechanical arm... Spinning gears!";
             state.balances[player] -= stake;
 
-            // Generate high speed vertical frame matrices
             const makeStrip = (el) => {
                 let html = '';
                 for(let i=0; i<35; i++) {
@@ -701,7 +696,7 @@
             let finalSelection = "LOSS";
             let rSymbols = ["🍒", "🔔", "🔥"];
 
-            // MATH MODEL EVALUATION BRACKETS
+            // INTEGRATED MATH COMBINATION CONFIGURATIONS
             if (rand <= 0.02) {         
                 finalSelection = "JACKPOT"; rSymbols = ["💎", "💎", "💎"];
             } else if (rand <= 0.0533) { 
@@ -714,7 +709,6 @@
                 finalSelection = "CHERRIES"; rSymbols = ["🍒", "🍒", "🍒"];
             } else {                     
                 finalSelection = "LOSS";
-                // CRITICAL FIXED MATH FIX: Guarantee no mismatched triples trigger false positives
                 let r1 = slotSymbols[Math.floor(Math.random() * 4)];
                 let r2 = slotSymbols[Math.floor(Math.random() * 4)];
                 while(r1 === r2) { r2 = slotSymbols[Math.floor(Math.random() * 4)]; }
@@ -722,7 +716,6 @@
                 rSymbols = [r1, r2, r3];
             }
 
-            // REEL STOP SEQUENCE CHRONOLOGY ENGINE
             setTimeout(() => {
                 const animateReel = (el, finalSym, spinDuration) => {
                     el.style.transition = `top ${spinDuration}s cubic-bezier(0.15, 0.85, 0.35, 1)`;
@@ -733,16 +726,15 @@
                     }, (spinDuration * 1000) - 200);
                 };
 
-                // Mechanical sequential stop framework: 1st stops at 2.0s, 2nd at 2.5s, 3rd at 3.0s
                 animateReel(s1, rSymbols[0], 2.0);
                 animateReel(s2, rSymbols[1], 2.5);
                 animateReel(s3, rSymbols[2], 3.0);
             }, 50);
 
-            // Halt execution for the full 3 second mechanical window pass before rendering cashout balances
             setTimeout(async () => {
                 spinBtn.disabled = false;
 
+                // FIXED SYSTEM MATH: Enforce dynamic string injection safely without cached evaluation bugs
                 if (finalSelection === "JACKPOT") {
                     const grandPrize = state.jackpotPool;
                     state.balances[player] += grandPrize;
