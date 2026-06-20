@@ -762,6 +762,7 @@
         // ==========================================
         
         let isSpinning = false;
+        // Removed the bell and 7 emojis so only valid symbols roll on the reels
         const allEmojis = ['🍒', '🍋', '🍉', '🍇', '💎'];
 
         window.toggleSlotGame = () => {
@@ -828,19 +829,24 @@
             const r2Anim = setInterval(() => r2Elem.innerText = allEmojis[Math.floor(Math.random() * allEmojis.length)], 80);
             const r3Anim = setInterval(() => r3Elem.innerText = allEmojis[Math.floor(Math.random() * allEmojis.length)], 80);
 
-            // Sequentially stop the reels
+            // Sequentially stop the reels and pass the final symbols to the resolution function
             setTimeout(() => { clearInterval(r1Anim); r1Elem.innerText = finalSymbols[0]; }, 1000);
             setTimeout(() => { clearInterval(r2Anim); r2Elem.innerText = finalSymbols[1]; }, 1800);
             setTimeout(() => { clearInterval(r3Anim); r3Elem.innerText = finalSymbols[2]; 
                 
                 // 4. Resolve the Bet after animations finish
-                finishSlotSpin(player, outcomeType, multiplier, currentSlotBet);
+                finishSlotSpin(player, outcomeType, multiplier, currentSlotBet, finalSymbols);
             }, 2600);
         };
 
-        async function finishSlotSpin(player, outcomeType, multiplier, currentSlotBet) {
+        async function finishSlotSpin(player, outcomeType, multiplier, currentSlotBet, finalSymbols) {
             const stateRef = doc(db, "casino", "state");
+            
+            // Create history entry and append the exact symbols that were hit
             const historyEntry = { player: player, amount: currentSlotBet, type: outcomeType, time: Date.now() };
+            if (finalSymbols) {
+                historyEntry.symbols = finalSymbols.join(''); // e.g., '🍒🍒🍒'
+            }
 
             if (outcomeType === 'LOSS') {
                 // Bet goes entirely to jackpot pool
@@ -861,7 +867,7 @@
                 await updateDoc(stateRef, {
                     [`balances.${player}`]: increment(wonJackpot),
                     jackpot: 500, // Reset pool
-                    [`jackpotWinners.${player}`]: true, // Award the diamond/slot badge
+                    [`jackpotWinners.${player}`]: true, // Award the slot badge
                     slotHistory: arrayUnion(historyEntry)
                 });
                 showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
@@ -966,14 +972,14 @@
             }
             document.getElementById('slotJackpotText').innerText = (state.jackpot || 500).toFixed(2);
             
-            // Slot History Render
+            // Slot History Render (Now includes exactly which fruits were hit)
             const historyFeed = document.getElementById('slotHistoryFeed');
             if (state.slotHistory && state.slotHistory.length > 0) {
                 const recentHistory = [...state.slotHistory].slice(-15).reverse();
                 historyFeed.innerHTML = recentHistory.map(h => {
                     let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>${h.player}</strong> `;
                     if (h.type === 'LOSS') entry += `<span class="sh-loss">spun ${h.amount} coins and LOST.</span>`;
-                    else if (h.type === 'WIN') entry += `<span class="sh-win">hit winning fruits for ${h.winAmount} coins!</span>`;
+                    else if (h.type === 'WIN') entry += `<span class="sh-win">hit ${h.symbols || 'winning fruits'} for ${h.winAmount} coins!</span>`;
                     else if (h.type === 'JACKPOT') entry += `<span class="sh-jackpot">HIT THE MEGA DIAMOND JACKPOT OF ${h.winAmount} COINS!</span>`;
                     return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
                 }).join('');
