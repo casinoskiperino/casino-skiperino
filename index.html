@@ -347,7 +347,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 
         const firebaseConfig = {
           apiKey: "AIzaSyDJ0X8xHF8ys_JeiQiQs5ZP-8fcHFaNCHQ",
@@ -553,31 +553,49 @@
             if (state.balances[player] < amount) return errorDiv.innerText = "Error: Insufficient Cojke Coins for " + player;
 
             errorDiv.innerText = "";
-            state.balances[player] -= amount;
             
             const qDaily = parseFloat(state.currentOdds.daily) || 0;
             const qSkip = parseFloat(state.currentOdds.skip) || 0;
             const multiplier = prediction === "DAILY" ? qDaily : qSkip;
             
-            state.bets.push({
+            // 1. Create the bet object with a unique timestamp ID
+            const newBet = {
+                id: Date.now().toString() + Math.floor(Math.random() * 1000), 
                 player: player,
                 prediction: prediction,
                 amount: amount,
                 win: parseFloat((amount * multiplier).toFixed(2))
+            };
+
+            // 2. Clear the input field immediately for UX
+            document.getElementById('betAmount').value = ""; 
+
+            // 3. Atomically tell the server to subtract the balance and add the bet
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, {
+                bets: arrayUnion(newBet),
+                [`balances.${player}`]: increment(-amount)
             });
 
+            // Make sure the input clears
             document.getElementById('betAmount').value = ""; 
-            await pushStateToCloud();
+            
+            // REMOVE pushStateToCloud() FROM HERE!
         };
 
         window.cancelBet = async (index) => {
             if (isFeltLocked() && !isAdmin) return alert("Felt is locked down. Cancellations denied.");
+            
             const bet = state.bets[index];
             if (!isAdmin && bet.player !== currentUserPlayerName) return alert("Security Violation.");
+            
             if(confirm(`Refund ${bet.amount} coins back to ${bet.player}?`)) {
-                state.balances[bet.player] += bet.amount; 
-                state.bets.splice(index, 1); 
-                await pushStateToCloud();
+                const stateRef = doc(db, "casino", "state");
+                // Atomically tell the server to refund the balance and remove the bet
+                await updateDoc(stateRef, {
+                    bets: arrayRemove(bet),
+                    [`balances.${bet.player}`]: increment(bet.amount)
+                });
             }
         };
 
