@@ -624,7 +624,7 @@
             }
         });
 
-        function startDatabaseSync() {
+       function startDatabaseSync() {
             const stateRef = doc(db, "casino", "state");
             onSnapshot(stateRef, async (docSnap) => {
                 if (!docSnap.exists()) {
@@ -632,7 +632,11 @@
                         await setDoc(stateRef, initialState);
                         state = initialState;
                     } else {
-                        alert("The Pit Boss has not initialized the casino yet."); return;
+                        // Replace the ugly alert with an on-screen message
+                        const syncText = document.getElementById('syncingText');
+                        syncText.innerHTML = "🚨 The Pit Boss has not opened the doors yet.<br><span style='font-size: 0.6em; color: #aaa;'>Waiting for Pit Boss to initialize the casino...</span>";
+                        syncText.style.color = "#ff3333";
+                        return;
                     }
                 } else {
                     state = docSnap.data();
