@@ -97,7 +97,7 @@
         .sh-loss { color: #ff4d4d; }
         .sh-jackpot { color: #ffdf00; font-weight: bold; text-shadow: 0 0 5px #ffdf00; }
         
-        #slotOverlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10; border-radius: 15px; align-items: center; justify-content: center; flex-direction: column; }
+        #slotOverlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10; border-radius: 15px; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 20px;}
         .overlay-text { font-family: 'Oswald', sans-serif; font-size: 3em; font-weight: 700; text-align: center; margin-bottom: 20px; }
 
         /* --- SLOT MACHINE --- */
@@ -205,18 +205,8 @@
                     <div id="betError" style="color: #ff3333; margin-top: 15px; text-align: center; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
                 </div>
 
-                <div class="card">
-                    <h3>🎟️ Active Bets Slip</h3>
-                    <table>
-                        <thead>
-                            <tr><th>Player</th><th>Prediction</th><th>Amount</th><th>Potent. Win</th><th>Action</th></tr>
-                        </thead>
-                        <tbody id="betsTableBody"></tbody>
-                    </table>
-                </div>
-
                 <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
-                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🎰 Šomarine Voćkice</h3>
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🎰 Šomarine Zabranjene Voćkice</h3>
                     <button class="purple-btn" id="toggleSlotBtn" onclick="toggleSlotGame()">✨ OPEN SLOT MACHINE ✨</button>
                     
                     <div id="slotGameContainer" class="collapse-container">
@@ -693,7 +683,7 @@
         window.downloadLog = () => { /* Retained */ };
 
         // ==========================================
-        // ŠOMARINE VOĆKICE (SLOT MACHINE)
+        // ŠOMARINE ZABRANJENE VOĆKICE (SLOT MACHINE)
         // ==========================================
         let isSpinning = false;
         const allEmojis = ['🍒', '🍋', '🍉', '🍇', '💎'];
@@ -708,6 +698,13 @@
         window.spinSlots = async () => {
             if (isSpinning || !state) return;
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            
+            // POHLEPNI COOLDOWN PROVERA
+            if (state.jackpotWinners && state.jackpotWinners[player]) {
+                showSlotOverlay("🚫 ZABRANJENO! 🚫<br><span style='font-size:0.4em'>Osvojio si poslednji jackpot.<br>Mašina te je blokirala dok neko drugi ne dobije!</span>", "#ff3333"); 
+                return;
+            }
+
             const currentSlotBet = parseInt(document.getElementById('slotBetSelect').value);
             
             if (state.balances[player] < currentSlotBet) {
@@ -762,7 +759,12 @@
             } else if (outcomeType === 'JACKPOT') {
                 const wonJackpot = state.jackpot || 500;
                 historyEntry.winAmount = wonJackpot;
-                await updateDoc(stateRef, { [`balances.${player}`]: increment(wonJackpot), jackpot: 500, [`jackpotWinners.${player}`]: true, slotHistory: arrayUnion(historyEntry) });
+                await updateDoc(stateRef, { 
+                    [`balances.${player}`]: increment(wonJackpot), 
+                    jackpot: 500, 
+                    jackpotWinners: { [player]: true }, // POHLEPNI OVERWRITE: Brise prethodne pobednike
+                    slotHistory: arrayUnion(historyEntry) 
+                });
                 showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
             }
             isSpinning = false; document.getElementById('spinBtn').disabled = false; document.getElementById('slotBetSelect').disabled = false;
