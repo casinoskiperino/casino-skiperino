@@ -575,7 +575,10 @@
             const errorDiv = document.getElementById('betError');
 
             if (isNaN(amount) || amount <= 0) return errorDiv.innerText = "Error: Please enter a valid amount.";
-            if (state.balances[player] < amount) return errorDiv.innerText = "Error: Insufficient Cojke Coins for " + player;
+            
+            // BEZBEDNA PROVERA BALANSA (FALLBACK NA 0)
+            const bal = state.balances[player] || 0;
+            if (bal < amount) return errorDiv.innerText = "Error: Insufficient Cojke Coins for " + player;
 
             errorDiv.innerText = "";
             const qDaily = parseFloat(state.currentOdds.daily) || 0;
@@ -604,12 +607,12 @@
             let playersWhoBet = {};
             state.bets.forEach(bet => {
                 if (!playersWhoBet[bet.player]) playersWhoBet[bet.player] = { won: false, lost: false };
-                if (bet.prediction === actual) { state.balances[bet.player] += bet.win; playersWhoBet[bet.player].won = true; } 
+                if (bet.prediction === actual) { state.balances[bet.player] = (state.balances[bet.player] || 0) + bet.win; playersWhoBet[bet.player].won = true; } 
                 else { playersWhoBet[bet.player].lost = true; }
             });
             for (const player in playersWhoBet) {
                 if (playersWhoBet[player].lost) state.streaks[player] = 0;
-                else if (playersWhoBet[player].won) state.streaks[player] += 1;
+                else if (playersWhoBet[player].won) state.streaks[player] = (state.streaks[player] || 0) + 1;
             }
             state.bets = []; 
             const dateObj = new Date(state.currentDate);
@@ -637,7 +640,7 @@
             const player = document.getElementById('adjPlayer').value;
             const amount = parseFloat(document.getElementById('adjAmount').value);
             if (!isNaN(amount)) {
-                state.balances[player] += amount;
+                state.balances[player] = (state.balances[player] || 0) + amount;
                 document.getElementById('adjAmount').value = "";
                 await pushStateToCloud();
                 alert("Pit Boss Adjustment: " + player + "'s balance changed by " + amount);
@@ -707,7 +710,9 @@
 
             const currentSlotBet = parseInt(document.getElementById('slotBetSelect').value);
             
-            if (state.balances[player] < currentSlotBet) {
+            // BEZBEDNA PROVERA BALANSA
+            const bal = state.balances[player] || 0;
+            if (bal < currentSlotBet) {
                 showSlotOverlay("💸 BROKE! 💸<br><span style='font-size:0.4em'>Insufficient Cojke Coins.</span>", "#ff3333"); return;
             }
 
@@ -762,7 +767,7 @@
                 await updateDoc(stateRef, { 
                     [`balances.${player}`]: increment(wonJackpot), 
                     jackpot: 500, 
-                    jackpotWinners: { [player]: true }, // POHLEPNI OVERWRITE: Brise prethodne pobednike
+                    jackpotWinners: { [player]: true }, 
                     slotHistory: arrayUnion(historyEntry) 
                 });
                 showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
@@ -822,7 +827,6 @@
             const colSpacing = 45;
             const centerX = 350; 
 
-            // High-End Glowing Pegs
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c <= r; c++) {
                     const peg = document.createElement('div');
@@ -859,7 +863,9 @@
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             const errorDiv = document.getElementById('plinkoError');
 
-            if (state.balances[player] < currentPlinkoBet) {
+            // BEZBEDNA PROVERA BALANSA
+            const bal = state.balances[player] || 0;
+            if (bal < currentPlinkoBet) {
                 errorDiv.innerText = `Insufficient funds to buy a ${currentPlinkoName} Ball!`;
                 return;
             }
@@ -889,7 +895,6 @@
             const ball = document.createElement('div');
             ball.className = 'plinko-ball';
             
-            // Bright neon core that pops, extending out evenly
             ball.style.background = `radial-gradient(circle at 30% 30%, #ffffff 10%, ${ballColor} 50%, ${ballColor} 90%, #333333 100%)`;
             ball.style.color = ballColor;
             
@@ -994,13 +999,15 @@
                 errorDiv.innerText = "Ne možeš sam sebe da usereš, majmune!";
                 return;
             }
-            if (state.balances[attacker] < amount) {
+            
+            // BEZBEDNA PROVERA BALANSA
+            const bal = state.balances[attacker] || 0;
+            if (bal < amount) {
                 errorDiv.innerText = "Nemaš dovoljno novčića za ovu sabotažu!";
                 return;
             }
 
-            // Da li je napadač prvi na tabeli? Lider ne sme da seče ostale.
-            const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
+            const sortedPlayers = Object.keys(state.balances).sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
             if (sortedPlayers[0] === attacker && !isAdmin) {
                 errorDiv.innerText = "Ti si prvi na tabeli! Lider nema pravo da userava sirotinju.";
                 return;
@@ -1010,13 +1017,12 @@
             
             const stateRef = doc(db, "casino", "state");
             const historyEntry = {
-                attacker: attacker, // Ostaje zapisano u bazi za reviziju, ali UI krije
+                attacker: attacker, 
                 target: target,
                 amount: amount,
                 time: Date.now()
             };
 
-            // Obojici se oduzima uneta vrednost u isto vreme
             await updateDoc(stateRef, {
                 [`balances.${attacker}`]: increment(-amount),
                 [`balances.${target}`]: increment(-amount),
@@ -1075,17 +1081,18 @@
             }
 
             // LEADERBOARD RENDER
-            const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
+            const sortedPlayers = Object.keys(state.balances).sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
             const tbodyL = document.getElementById('leaderboardBody');
             tbodyL.innerHTML = sortedPlayers.map((p, index) => {
                 const rankDisplay = index === 0 ? "👑 1" : (index + 1);
                 const streak = state.streaks[p] || 0;
                 let streakDisplay = streak >= 3 ? `🔥 ${streak}` : streak;
                 const hasJackpot = state.jackpotWinners && state.jackpotWinners[p] ? " 🎰" : "";
+                const safeBal = state.balances[p] || 0;
                 return `<tr>
                     <td>${rankDisplay}</td>
                     <td>${p}${hasJackpot}</td>
-                    <td><span class="coin-icon">🪙</span>${state.balances[p].toFixed(2)}</td>
+                    <td><span class="coin-icon">🪙</span>${safeBal.toFixed(2)}</td>
                     <td style="color: ${streak > 0 ? '#4dff4d' : '#fff'}; font-weight: bold;">${streakDisplay}</td>
                 </tr>`;
             }).join('');
@@ -1105,11 +1112,12 @@
                     </tr>`).join('');
             }
 
-            // UI BALANCE RENDER FOR MINIGAMES
+            // UI BALANCE RENDER FOR MINIGAMES (OVO JE BILA KRITIČNA TAČKA GDE JE KOD PUCAO)
             const displayPlayer = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             if(displayPlayer) {
-                document.getElementById('slotPlayerBalance').innerText = state.balances[displayPlayer].toFixed(2);
-                document.getElementById('plinkoPlayerBalance').innerText = state.balances[displayPlayer].toFixed(2);
+                const safeGameBal = state.balances[displayPlayer] || 0;
+                document.getElementById('slotPlayerBalance').innerText = safeGameBal.toFixed(2);
+                document.getElementById('plinkoPlayerBalance').innerText = safeGameBal.toFixed(2);
             }
             
             // SLOT MACHINE RENDER
