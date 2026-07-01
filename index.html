@@ -204,6 +204,16 @@
                     <button id="placeBetBtn" onclick="placeBet()">Place Bet on Felt</button>
                     <div id="betError" style="color: #ff3333; margin-top: 15px; text-align: center; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
                 </div>
+                
+                <div class="card">
+                    <h3>🎟️ Active Bets Slip</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Player</th><th>Prediction</th><th>Amount</th><th>Potent. Win</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="betsTableBody"></tbody>
+                    </table>
+                </div>
 
                 <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
                     <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🎰 Šomarine Zabranjene Voćkice</h3>
@@ -431,7 +441,7 @@
             slotHistory: [], 
             plinkoHistory: [],
             usraHistory: [],
-            jackpotWinners: {} 
+            jackpotWinners: { "Shomara": true } 
         };
 
         const authPlayerSelect = document.getElementById('authPlayerName');
@@ -527,7 +537,6 @@
             }
         });
 
-        // GLAVNI PANCIR ZA BAZU KOJA JE PRAZNA ILI PUNA ĐUBRETA
         function startDatabaseSync() {
             const stateRef = doc(db, "casino", "state");
             onSnapshot(stateRef, async (docSnap) => {
@@ -562,14 +571,19 @@
                     if (!state.slotHistory) state.slotHistory = [];
                     if (!state.plinkoHistory) state.plinkoHistory = [];
                     if (!state.usraHistory) state.usraHistory = [];
-                    if (!state.jackpotWinners) state.jackpotWinners = {};
+                    if (!state.jackpotWinners) state.jackpotWinners = { "Shomara": true };
                     if (!state.bets) state.bets = [];
                     if (!state.chronologicalHistory) state.chronologicalHistory = [];
                     if (!state.balances) state.balances = {};
                     if (!state.streaks) state.streaks = {};
                     if (!state.currentOdds) state.currentOdds = { daily: "1.29", skip: "3.60" };
                     
-                    // LIMITIRANJE HISTORY NIZOVA NA MAKSIMALNO 30 PREKOPIRANIH ZAPISA DA SE BAZA NE GUŠI
+                    // HIGHLANDER JACKPOT LOGIC - Automatski brise druge iz baze i ostavlja Shomaru (samo pri prvom ucitavanju ako je greska)
+                    if (state.jackpotWinners && Object.keys(state.jackpotWinners).length > 1) {
+                        state.jackpotWinners = { "Shomara": true };
+                        if (isAdmin) { updateDoc(stateRef, { jackpotWinners: { "Shomara": true } }); }
+                    }
+
                     if (state.plinkoHistory.length > 30) state.plinkoHistory = state.plinkoHistory.slice(-30);
                     if (state.slotHistory.length > 30) state.slotHistory = state.slotHistory.slice(-30);
                     if (state.usraHistory.length > 30) state.usraHistory = state.usraHistory.slice(-30);
@@ -632,7 +646,6 @@
             document.getElementById('betAmount').value = ""; 
             const stateRef = doc(db, "casino", "state");
             
-            // PUSH SAMO OVE JEDNE PROMENE
             await updateDoc(stateRef, { bets: arrayUnion(newBet), [`balances.${player}`]: increment(-amount) });
         };
 
@@ -724,8 +737,6 @@
             if (!isAdmin) return;
             if(confirm(`Da li si siguran da želiš da obrišeš ${target} log?`)) {
                 const stateRef = doc(db, "casino", "state");
-                
-                // UMESETO SAMOG BRISANJA U LOKALU, ŠALJE KOMANDU DIREKTNO BAZI
                 try {
                     await updateDoc(stateRef, { [target]: [] });
                     alert(`${target} uspešno obrisan.`);
@@ -762,8 +773,9 @@
             if (isSpinning || !state) return;
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             
+            // POHLEPNI COOLDOWN PROVERA
             if (state.jackpotWinners && state.jackpotWinners[player]) {
-                showSlotOverlay("🚫 ZABRANJENO! 🚫<br><span style='font-size:0.4em'>Osvojio si poslednji jackpot.<br>Mašina te je blokirala dok neko drugi ne dobije!</span>", "#ff3333"); 
+                showSlotOverlay("🚫 ZABRANJENO! 🚫<br><span style='font-size:0.4em'>Ti si trenutni šampion!<br>Mašina je blokirana za tebe dok neko drugi ne obori Jackpot!</span>", "#ff3333"); 
                 return;
             }
 
@@ -779,7 +791,6 @@
             document.getElementById('spinBtn').disabled = true;
             document.getElementById('slotBetSelect').disabled = true;
 
-            // UPDATE BALANCE FIRST
             const stateRef = doc(db, "casino", "state");
             await updateDoc(stateRef, { [`balances.${player}`]: increment(-currentSlotBet) });
 
@@ -815,7 +826,6 @@
             const historyEntry = { player: player, amount: currentSlotBet, type: outcomeType, time: Date.now() };
             if (finalSymbols) historyEntry.symbols = finalSymbols.join('');
 
-            // MANAGING THE ARRAY SIZE LOCALLY BEFORE PUSHING TO PREVENT OVERFLOW
             let updatedHistory = [...state.slotHistory, historyEntry];
             if (updatedHistory.length > 30) updatedHistory = updatedHistory.slice(-30);
 
@@ -833,7 +843,7 @@
                 await updateDoc(stateRef, { 
                     [`balances.${player}`]: increment(wonJackpot), 
                     jackpot: 500, 
-                    jackpotWinners: { [player]: true }, 
+                    jackpotWinners: { [player]: true }, // Ovo kompletno brise stare i upisuje novog!
                     slotHistory: updatedHistory 
                 });
                 showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
@@ -1030,7 +1040,6 @@
                 time: Date.now()
             };
 
-            // MANAGING ARRAY SIZE LOCALLY BEFORE PUSHING
             let updatedPlinkoHistory = [...state.plinkoHistory, historyEntry];
             if (updatedPlinkoHistory.length > 30) updatedPlinkoHistory = updatedPlinkoHistory.slice(-30);
 
@@ -1090,7 +1099,6 @@
                 time: Date.now()
             };
 
-            // MANAGING ARRAY SIZE LOCALLY BEFORE PUSHING
             let updatedUsraHistory = [...state.usraHistory, historyEntry];
             if (updatedUsraHistory.length > 30) updatedUsraHistory = updatedUsraHistory.slice(-30);
 
@@ -1197,7 +1205,7 @@
             document.getElementById('slotJackpotText').innerText = (state.jackpot || 500).toFixed(2);
             const slotFeed = document.getElementById('slotHistoryFeed');
             if (state.slotHistory && state.slotHistory.length > 0) {
-                const recentSlot = [...state.slotHistory].slice(-30).reverse(); // SHOW MAX 30
+                const recentSlot = [...state.slotHistory].slice(-30).reverse(); 
                 slotFeed.innerHTML = recentSlot.map(h => {
                     let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>${h.player}</strong> `;
                     if (h.type === 'LOSS') entry += `<span class="sh-loss">spun ${h.amount} coins and LOST.</span>`;
@@ -1210,7 +1218,7 @@
             // PLINKO MACHINE RENDER
             const plinkoFeed = document.getElementById('plinkoHistoryFeed');
             if (state.plinkoHistory && state.plinkoHistory.length > 0) {
-                const recentPlinko = [...state.plinkoHistory].slice(-30).reverse(); // SHOW MAX 30
+                const recentPlinko = [...state.plinkoHistory].slice(-30).reverse(); 
                 plinkoFeed.innerHTML = recentPlinko.map(h => {
                     let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>${h.player}</strong> dropped a <span style="color:${h.color}; font-weight:bold;">${h.ball} Ball</span> `;
                     if (h.net > 0) entry += `and won <span class="sh-win">+${h.net.toFixed(2)}</span> coins! (${h.multiplier}x)`;
@@ -1223,7 +1231,7 @@
             // USERI MALOG MAJMUNA RENDER
             const usraFeed = document.getElementById('usraHistoryFeed');
             if (state.usraHistory && state.usraHistory.length > 0) {
-                const recentUsra = [...state.usraHistory].slice(-30).reverse(); // SHOW MAX 30
+                const recentUsra = [...state.usraHistory].slice(-30).reverse(); 
                 usraFeed.innerHTML = recentUsra.map(h => {
                     let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>[Anonymous]</strong> je usrao <strong>${h.target}</strong> za <span class="sh-loss">${h.amount}</span> novčića.`;
                     return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
