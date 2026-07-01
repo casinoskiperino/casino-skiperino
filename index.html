@@ -513,6 +513,7 @@
             }
         });
 
+        // 🛡️ OVDE SMO DODALI PANCIR: Ako fali bilo koji niz, skripta ga sama napravi
         function startDatabaseSync() {
             const stateRef = doc(db, "casino", "state");
             onSnapshot(stateRef, async (docSnap) => {
@@ -530,11 +531,16 @@
                     }
                 } else {
                     state = docSnap.data();
-                    if (state.jackpot === undefined) state.jackpot = 500;
+                    if (!state.jackpot) state.jackpot = 500;
                     if (!state.slotHistory) state.slotHistory = [];
                     if (!state.plinkoHistory) state.plinkoHistory = [];
                     if (!state.usraHistory) state.usraHistory = [];
                     if (!state.jackpotWinners) state.jackpotWinners = {};
+                    if (!state.bets) state.bets = [];
+                    if (!state.chronologicalHistory) state.chronologicalHistory = [];
+                    if (!state.balances) state.balances = {};
+                    if (!state.streaks) state.streaks = {};
+                    if (!state.currentOdds) state.currentOdds = { daily: "1.29", skip: "3.60" };
                 }
                 document.getElementById('loginOverlay').style.display = "none";
                 document.getElementById('appContainer').style.display = "flex";
@@ -576,7 +582,6 @@
 
             if (isNaN(amount) || amount <= 0) return errorDiv.innerText = "Error: Please enter a valid amount.";
             
-            // BEZBEDNA PROVERA BALANSA (FALLBACK NA 0)
             const bal = state.balances[player] || 0;
             if (bal < amount) return errorDiv.innerText = "Error: Insufficient Cojke Coins for " + player;
 
@@ -710,7 +715,6 @@
 
             const currentSlotBet = parseInt(document.getElementById('slotBetSelect').value);
             
-            // BEZBEDNA PROVERA BALANSA
             const bal = state.balances[player] || 0;
             if (bal < currentSlotBet) {
                 showSlotOverlay("💸 BROKE! 💸<br><span style='font-size:0.4em'>Insufficient Cojke Coins.</span>", "#ff3333"); return;
@@ -863,7 +867,6 @@
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             const errorDiv = document.getElementById('plinkoError');
 
-            // BEZBEDNA PROVERA BALANSA
             const bal = state.balances[player] || 0;
             if (bal < currentPlinkoBet) {
                 errorDiv.innerText = `Insufficient funds to buy a ${currentPlinkoName} Ball!`;
@@ -1000,7 +1003,6 @@
                 return;
             }
             
-            // BEZBEDNA PROVERA BALANSA
             const bal = state.balances[attacker] || 0;
             if (bal < amount) {
                 errorDiv.innerText = "Nemaš dovoljno novčića za ovu sabotažu!";
@@ -1112,7 +1114,7 @@
                     </tr>`).join('');
             }
 
-            // UI BALANCE RENDER FOR MINIGAMES (OVO JE BILA KRITIČNA TAČKA GDE JE KOD PUCAO)
+            // UI BALANCE RENDER FOR MINIGAMES (OVO VIŠE NIKADA NEĆE PUKNUTI)
             const displayPlayer = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             if(displayPlayer) {
                 const safeGameBal = state.balances[displayPlayer] || 0;
