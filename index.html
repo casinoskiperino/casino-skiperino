@@ -83,6 +83,11 @@
         .purple-btn { background: linear-gradient(to bottom, #9d00ff, #4a0080); color: #fff; border-color: #d480ff; box-shadow: 0 6px 0 #2a004d, 0 10px 10px rgba(0,0,0,0.5); margin-top: 10px; font-size: 1.4em; text-shadow: 0 0 10px #e6b3ff; }
         .purple-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2a004d, 0 5px 5px rgba(0,0,0,0.5); }
         .purple-btn:active { transform: translateY(6px); box-shadow: none; }
+        
+        .brown-btn { background: linear-gradient(to bottom, #8B4513, #3d1c00) !important; border-color: #A0522D !important; box-shadow: 0 6px 0 #2b1400, 0 10px 10px rgba(0,0,0,0.5) !important; text-shadow: 1px 1px 2px #000 !important; }
+        .brown-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2b1400, 0 5px 5px rgba(0,0,0,0.5) !important; }
+        .brown-btn:active { transform: translateY(6px); box-shadow: none !important; }
+
         .collapse-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
         .collapse-container.open { max-height: 1400px; opacity: 1; }
         .history-container { max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 5px; padding: 10px; text-align: left; font-size: 0.9em; margin-top: 20px; }
@@ -103,34 +108,10 @@
         .slot-legend { background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; font-size: 1.1em; margin-bottom: 20px; border: 1px dashed #d4af37; color: #fff; }
 
         /* --- PLINKO MACHINE PREMIUM UPGRADES --- */
-        .plinko-board-container { 
-            width: 100%; max-width: 700px; height: 650px; margin: 20px auto; 
-            background: radial-gradient(circle at top, #2a0a4a 0%, #05010f 100%); 
-            border: 4px solid #d4af37; border-radius: 15px; position: relative; 
-            overflow: hidden; box-shadow: inset 0 0 40px #000, 0 10px 20px rgba(0,0,0,0.8); 
-        }
-        /* Bright White Glowing Pegs */
-        .plinko-peg { 
-            position: absolute; width: 12px; height: 12px; 
-            background: radial-gradient(circle at 30% 30%, #ffffff 40%, #e6e6e6 80%, #cccccc); 
-            border-radius: 50%; transform: translate(-50%, -50%); z-index: 2; 
-            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7), inset 0 -2px 3px rgba(0,0,0,0.2);
-        }
-        .plinko-bucket { 
-            position: absolute; bottom: 0; height: 50px; 
-            display: flex; align-items: center; justify-content: center; 
-            transform: translateX(-50%); font-weight: bold; font-family: 'Oswald';
-            border-radius: 0 0 8px 8px; box-sizing: border-box;
-            box-shadow: inset 0 10px 15px -5px rgba(0,0,0,0.8);
-            border-top: 4px solid; color: #fff; text-shadow: 1px 1px 2px #000, 0 0 5px currentColor;
-            z-index: 1;
-        }
-        /* Vibrant Neon Glowing Balls */
-        .plinko-ball { 
-            position: absolute; width: 18px; height: 18px; border-radius: 50%; 
-            transform: translate(-50%, -50%); z-index: 10; 
-            box-shadow: 0 0 15px currentColor, inset -3px -3px 5px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,255,255,0.8); 
-        }
+        .plinko-board-container { width: 100%; max-width: 700px; height: 650px; margin: 20px auto; background: radial-gradient(circle at top, #2a0a4a 0%, #05010f 100%); border: 4px solid #d4af37; border-radius: 15px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px #000, 0 10px 20px rgba(0,0,0,0.8); }
+        .plinko-peg { position: absolute; width: 12px; height: 12px; background: radial-gradient(circle at 30% 30%, #ffffff 40%, #e6e6e6 80%, #cccccc); border-radius: 50%; transform: translate(-50%, -50%); z-index: 2; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7), inset 0 -2px 3px rgba(0,0,0,0.2); }
+        .plinko-bucket { position: absolute; bottom: 0; height: 50px; display: flex; align-items: center; justify-content: center; transform: translateX(-50%); font-weight: bold; font-family: 'Oswald'; border-radius: 0 0 8px 8px; box-sizing: border-box; box-shadow: inset 0 10px 15px -5px rgba(0,0,0,0.8); border-top: 4px solid; color: #fff; text-shadow: 1px 1px 2px #000, 0 0 5px currentColor; z-index: 1; }
+        .plinko-ball { position: absolute; width: 18px; height: 18px; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; box-shadow: 0 0 15px currentColor, inset -3px -3px 5px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,255,255,0.8); }
         .floating-win { position: absolute; font-family: 'Oswald', sans-serif; font-size: 1.5em; font-weight: bold; transform: translate(-50%, -50%); transition: top 1s ease-out, opacity 1s ease-out; z-index: 20; pointer-events: none; text-shadow: 1px 1px 3px #000; }
         .ball-selector { display: flex; justify-content: space-around; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #d4af37; flex-wrap: wrap; gap: 10px; }
         .ball-option { padding: 10px 15px; border-radius: 8px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 1.1em; border: 2px solid #444; opacity: 0.5; transition: all 0.2s; color: #fff; text-shadow: 1px 1px 2px #000; }
@@ -317,6 +298,36 @@
                         </div>
                     </div>
                 </div>
+                
+                <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">💩 Useri Malog Majmuna</h3>
+                    <button class="purple-btn" id="toggleUsraBtn" onclick="toggleUsraGame()">✨ OPEN USERI MALOG MAJMUNA ✨</button>
+                    
+                    <div id="usraGameContainer" class="collapse-container">
+                        <div style="padding-top: 15px;">
+                            <h4 style="color: #fff; text-shadow: 1px 1px 2px #000; font-size: 1.3em;">Kojeg majmuna želite da userete?</h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-top: 15px;">
+                                <div>
+                                    <label>Žrtva:</label>
+                                    <select id="usraTarget"></select>
+                                </div>
+                                <div>
+                                    <label>Vrednost (Cojke Coins):</label>
+                                    <input type="number" id="usraAmount" min="1" placeholder="Unesi iznos">
+                                </div>
+                            </div>
+                            
+                            <button id="usraBtn" class="purple-btn brown-btn" style="font-size: 2em; padding: 15px;" onclick="usraMajmuna()">USERI 💩</button>
+                            <div id="usraError" style="color: #ff3333; margin-top: 10px; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
+                            
+                            <div style="margin-top: 25px; text-align: left;">
+                                <h4 style="margin: 0; color: #d4af37; font-family: 'Oswald', sans-serif; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">📜 LISTA USRANIH MAJMUNA</h4>
+                                <div class="history-container" id="usraHistoryFeed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
 
@@ -358,8 +369,9 @@
                     <input type="number" id="adminJackpotAmount" placeholder="Set exact Jackpot amount">
                     <button onclick="adminSetJackpot()" style="background: linear-gradient(to bottom, #9d00ff, #4a0080); color: white; margin-bottom: 10px;">Set Jackpot</button>
                     <div style="display:flex; gap:10px; margin-bottom: 15px;">
-                        <button onclick="adminClearHistory('slotHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.9em; padding:10px;">Wipe Slots</button>
-                        <button onclick="adminClearHistory('plinkoHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.9em; padding:10px;">Wipe Plinko</button>
+                        <button onclick="adminClearHistory('slotHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Slots</button>
+                        <button onclick="adminClearHistory('plinkoHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Plinko</button>
+                        <button onclick="adminClearHistory('usraHistory')" style="background: linear-gradient(to bottom, #8B4513, #3d1c00); color: white; font-size:0.8em; padding:10px;">Wipe Usrane</button>
                     </div>
                     <hr>
 
@@ -428,16 +440,20 @@
             jackpot: 500, 
             slotHistory: [], 
             plinkoHistory: [],
+            usraHistory: [],
             jackpotWinners: {} 
         };
 
         const authPlayerSelect = document.getElementById('authPlayerName');
         const betSelect = document.getElementById('betPlayer');
         const adjSelect = document.getElementById('adjPlayer');
+        const usraSelect = document.getElementById('usraTarget');
+        
         playersList.sort().forEach(p => {
             authPlayerSelect.add(new Option(p, p));
             betSelect.add(new Option(p, p));
             adjSelect.add(new Option(p, p));
+            usraSelect.add(new Option(p, p));
         });
 
         window.toggleAuthMode = () => {
@@ -527,6 +543,7 @@
                     if (state.jackpot === undefined) state.jackpot = 500;
                     if (!state.slotHistory) state.slotHistory = [];
                     if (!state.plinkoHistory) state.plinkoHistory = [];
+                    if (!state.usraHistory) state.usraHistory = [];
                     if (!state.jackpotWinners) state.jackpotWinners = {};
                 }
                 document.getElementById('loginOverlay').style.display = "none";
@@ -667,7 +684,7 @@
         
         window.adminClearHistory = async (target) => {
             if (!isAdmin) return;
-            if(confirm(`Clear the ${target} log?`)) {
+            if(confirm(`Da li si siguran da želiš da obrišeš ${target} log?`)) {
                 const stateRef = doc(db, "casino", "state");
                 await updateDoc(stateRef, { [target]: [] });
             }
@@ -949,6 +966,64 @@
             });
         }
 
+        // ==========================================
+        // USERI MALOG MAJMUNA
+        // ==========================================
+        
+        window.toggleUsraGame = () => {
+            const container = document.getElementById('usraGameContainer');
+            container.classList.toggle('open');
+            document.getElementById('toggleUsraBtn').innerText = container.classList.contains('open') ? "🔼 CLOSE USERI MALOG MAJMUNA 🔼" : "✨ OPEN USERI MALOG MAJMUNA ✨";
+        };
+
+        window.usraMajmuna = async () => {
+            if (!state) return;
+            
+            const attacker = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const target = document.getElementById('usraTarget').value;
+            const amount = parseFloat(document.getElementById('usraAmount').value);
+            const errorDiv = document.getElementById('usraError');
+
+            if (isNaN(amount) || amount <= 0) {
+                errorDiv.innerText = "Alo, moraš uneti pozitivan broj!";
+                return;
+            }
+            if (attacker === target) {
+                errorDiv.innerText = "Ne možeš sam sebe da usereš, majmune!";
+                return;
+            }
+            if (state.balances[attacker] < amount) {
+                errorDiv.innerText = "Nemaš dovoljno novčića za ovu sabotažu!";
+                return;
+            }
+
+            // Da li je napadač prvi na tabeli? Lider ne sme da seče ostale.
+            const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
+            if (sortedPlayers[0] === attacker && !isAdmin) {
+                errorDiv.innerText = "Ti si prvi na tabeli! Lider nema pravo da userava sirotinju.";
+                return;
+            }
+
+            errorDiv.innerText = "";
+            
+            const stateRef = doc(db, "casino", "state");
+            const historyEntry = {
+                attacker: attacker, // Ostaje zapisano u bazi za reviziju, ali UI krije
+                target: target,
+                amount: amount,
+                time: Date.now()
+            };
+
+            // Obojici se oduzima uneta vrednost u isto vreme
+            await updateDoc(stateRef, {
+                [`balances.${attacker}`]: increment(-amount),
+                [`balances.${target}`]: increment(-amount),
+                usraHistory: arrayUnion(historyEntry)
+            });
+
+            document.getElementById('usraAmount').value = '';
+        };
+
         // MAIN RENDER LOOP 
         function renderAll() {
             if(!state) return;
@@ -1061,6 +1136,16 @@
                     return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
                 }).join('');
             } else { plinkoFeed.innerHTML = "<div style='color: #888; text-align:center;'>The pyramid is quiet. Drop a ball!</div>"; }
+
+            // USERI MALOG MAJMUNA RENDER
+            const usraFeed = document.getElementById('usraHistoryFeed');
+            if (state.usraHistory && state.usraHistory.length > 0) {
+                const recentUsra = [...state.usraHistory].slice(-15).reverse();
+                usraFeed.innerHTML = recentUsra.map(h => {
+                    let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>[Anonymous]</strong> je usrao <strong>${h.target}</strong> za <span class="sh-loss">${h.amount}</span> novčića.`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                }).join('');
+            } else { usraFeed.innerHTML = "<div style='color: #888; text-align:center;'>Niko još nije usran. Mir u ofisu.</div>"; }
         }
     </script>
 </body>
