@@ -39,10 +39,11 @@
         label { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #d4af37; font-size: 0.9em; display: block; margin-bottom: 5px; text-shadow: 1px 1px 2px #000; }
         input, select { width: 100%; padding: 12px; margin-bottom: 20px; box-sizing: border-box; background-color: #041a0a; color: #fff; border: 2px solid #d4af37; border-radius: 4px; font-family: 'Roboto', sans-serif; font-size: 1em; box-shadow: inset 0 2px 5px #000; }
         input:focus, select:focus { outline: none; border-color: #ffdf00; box-shadow: 0 0 10px rgba(255, 223, 0, 0.5); }
+        input:disabled, select:disabled { opacity: 0.5; cursor: not-allowed; }
 
         button { background: linear-gradient(to bottom, #ffea00, #b8860b); color: #2b0000; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; border: 2px solid #fff; border-radius: 50px; padding: 15px 20px; cursor: pointer; width: 100%; font-size: 1.2em; transition: all 0.1s ease; box-shadow: 0 6px 0 #7a5905, 0 10px 10px rgba(0,0,0,0.5); }
-        button:hover { filter: brightness(1.1); transform: translateY(2px); box-shadow: 0 4px 0 #7a5905, 0 5px 5px rgba(0,0,0,0.5); }
-        button:active { transform: translateY(6px); box-shadow: 0 0 0 #7a5905, 0 2px 2px rgba(0,0,0,0.5); }
+        button:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(2px); box-shadow: 0 4px 0 #7a5905, 0 5px 5px rgba(0,0,0,0.5); }
+        button:active:not(:disabled) { transform: translateY(6px); box-shadow: 0 0 0 #7a5905, 0 2px 2px rgba(0,0,0,0.5); }
         button:disabled { background: #444; border-color: #666; color: #888; box-shadow: none; cursor: not-allowed; transform: none !important; filter: none !important; }
 
         .dl-btn { background: linear-gradient(to bottom, #292929, #000000); color: #ffdf00; border-color: #d4af37; box-shadow: 0 6px 0 #000, 0 10px 10px rgba(0,0,0,0.5); margin-top: 10px; font-size: 0.9em; }
@@ -81,12 +82,12 @@
 
         /* --- MINI-GAMES SHARED STYLES --- */
         .purple-btn { background: linear-gradient(to bottom, #9d00ff, #4a0080); color: #fff; border-color: #d480ff; box-shadow: 0 6px 0 #2a004d, 0 10px 10px rgba(0,0,0,0.5); margin-top: 10px; font-size: 1.4em; text-shadow: 0 0 10px #e6b3ff; }
-        .purple-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2a004d, 0 5px 5px rgba(0,0,0,0.5); }
-        .purple-btn:active { transform: translateY(6px); box-shadow: none; }
+        .purple-btn:hover:not(:disabled) { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2a004d, 0 5px 5px rgba(0,0,0,0.5); }
+        .purple-btn:active:not(:disabled) { transform: translateY(6px); box-shadow: none; }
         
         .brown-btn { background: linear-gradient(to bottom, #8B4513, #3d1c00) !important; border-color: #A0522D !important; box-shadow: 0 6px 0 #2b1400, 0 10px 10px rgba(0,0,0,0.5) !important; text-shadow: 1px 1px 2px #000 !important; }
-        .brown-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2b1400, 0 5px 5px rgba(0,0,0,0.5) !important; }
-        .brown-btn:active { transform: translateY(6px); box-shadow: none !important; }
+        .brown-btn:hover:not(:disabled) { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2b1400, 0 5px 5px rgba(0,0,0,0.5) !important; }
+        .brown-btn:active:not(:disabled) { transform: translateY(6px); box-shadow: none !important; }
 
         .collapse-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
         .collapse-container.open { max-height: 2000px; opacity: 1; }
@@ -120,7 +121,6 @@
         /* --- BLACKJACK STYLES --- */
         .bj-table { background: radial-gradient(circle at center 150%, #0a4f21 0%, #031c0a 100%); border: 14px solid #1a0f08; border-radius: 120px 120px 15px 15px; padding: 30px 20px 20px; min-height: 280px; margin: 20px 0; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 15px 25px rgba(0,0,0,0.8), inset 0 0 0 4px #8B4513; display: flex; flex-direction: column; justify-content: space-between; align-items: center; overflow: hidden;}
         .bj-table::before { content: ''; position: absolute; top: 25px; left: 25px; right: 25px; bottom: 20px; border: 2px dashed rgba(212, 175, 55, 0.3); border-radius: 95px 95px 8px 8px; pointer-events: none; }
-        .bj-table::after { content: 'BLACK MARKO JACK PAYS 3 TO 2 \A DEALER MUST HIT SOFT 17'; white-space: pre-wrap; position: absolute; top: 52%; left: 50%; transform: translate(-50%, -50%); width: 100%; text-align: center; color: rgba(255, 255, 255, 0.12); font-family: 'Oswald', sans-serif; font-size: 1.3em; pointer-events: none; line-height: 1.3; letter-spacing: 2px; z-index: 0; }
         .bj-hand-area, .bj-status { z-index: 1; }
         .bj-hand-area { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0;}
         .bj-cards { display: flex; justify-content: center; min-height: 110px; }
@@ -1417,6 +1417,7 @@
             let msg = "";
             let historyText = "";
             const statusEl = document.getElementById('bjStatusText');
+            const timeString = new Date().toLocaleTimeString('en-US');
 
             const lossMsgs = [
                 "pobeda je bila van dometa",
@@ -1429,25 +1430,25 @@
                 winAmount = bjCurrentBet * 2.5; 
                 msg = `BLACKJACK! YOU WIN ${winAmount}`;
                 statusEl.style.color = "#FFDF00";
-                historyText = `<strong>${player}</strong> <span class="sh-win">WIN</span> je uzeo Premium W (+${winAmount})`;
+                historyText = `[${timeString}] <strong>${player}</strong> <span class="sh-win">WIN</span> je uzeo Premium W (+${winAmount})`;
             } 
             else if (outcome === 'WIN' || outcome === 'DEALER_BUST') {
                 winAmount = bjCurrentBet * 2; 
                 msg = `YOU WIN! Payout: ${winAmount}`;
                 statusEl.style.color = "#4dff4d";
-                historyText = `<strong>${player}</strong> <span class="sh-win">WIN</span> je uzeo Premium W (+${winAmount})`;
+                historyText = `[${timeString}] <strong>${player}</strong> <span class="sh-win">WIN</span> je uzeo Premium W (+${winAmount})`;
             }
             else if (outcome === 'PUSH') {
                 winAmount = bjCurrentBet; 
                 msg = "PUSH! BET RETURNED.";
                 statusEl.style.color = "#ccc";
-                historyText = `<strong>${player}</strong> <span style="color:#aaa;">DRAW</span> tvrda prica`;
+                historyText = `[${timeString}] <strong>${player}</strong> <span style="color:#aaa;">DRAW</span> tvrda prica`;
             }
             else { 
                 winAmount = 0;
-                msg = outcome === 'BUST' ? "BUST! YOU LOSE." : "DEALER WINS!";
+                msg = outcome === 'BUST' ? "BUST! YOU LOSE." : "MARKO JACK WINS!";
                 statusEl.style.color = "#ff3333";
-                historyText = `<strong>${player}</strong> <span class="sh-loss">LOSS</span> ${randomLoss} (-${bjCurrentBet})`;
+                historyText = `[${timeString}] <strong>${player}</strong> <span class="sh-loss">LOSS</span> ${randomLoss} (-${bjCurrentBet})`;
             }
 
             statusEl.innerText = msg;
@@ -1591,6 +1592,23 @@
 
             // USERI MALOG MAJMUNA RENDER
             const usraFeed = document.getElementById('usraHistoryFeed');
+            const usraBtnEl = document.getElementById('usraBtn');
+            const usraAmountEl = document.getElementById('usraAmount');
+            const usraTargetEl = document.getElementById('usraTarget');
+            
+            // Zabranjuje igru trenutnom lideru
+            if (sortedPlayers[0] === displayPlayer && !isAdmin) {
+                usraBtnEl.disabled = true;
+                usraAmountEl.disabled = true;
+                usraTargetEl.disabled = true;
+                usraBtnEl.innerText = "ZABRANJENO ZA LIDERA 🐒";
+            } else {
+                usraBtnEl.disabled = false;
+                usraAmountEl.disabled = false;
+                usraTargetEl.disabled = false;
+                usraBtnEl.innerText = "TI SI KITA U MOJIM USTIMA 🐒";
+            }
+
             if (state.usraHistory && state.usraHistory.length > 0) {
                 const recentUsra = [...state.usraHistory].slice(-30).reverse(); 
                 usraFeed.innerHTML = recentUsra.map(h => {
@@ -1604,8 +1622,7 @@
             if (state.bjHistory && state.bjHistory.length > 0) {
                 const recentBj = [...state.bjHistory].slice(-30).reverse(); 
                 bjFeed.innerHTML = recentBj.map(h => {
-                    let entry = `[${new Date(h.time).toLocaleTimeString()}] ${h.text}`;
-                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${h.text}</div>`;
                 }).join('');
             } else { bjFeed.innerHTML = "<div style='color: #888; text-align:center;'>Nema odigranih ruku. Diler čeka.</div>"; }
         }
