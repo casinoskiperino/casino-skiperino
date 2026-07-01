@@ -300,7 +300,7 @@
                 </div>
                 
                 <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
-                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">💩 Useri Malog Majmuna</h3>
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🐒 Useri Malog Majmuna</h3>
                     <button class="purple-btn" id="toggleUsraBtn" onclick="toggleUsraGame()">✨ OPEN USERI MALOG MAJMUNA ✨</button>
                     
                     <div id="usraGameContainer" class="collapse-container">
@@ -318,7 +318,7 @@
                                 </div>
                             </div>
                             
-                            <button id="usraBtn" class="purple-btn brown-btn" style="font-size: 2em; padding: 15px;" onclick="usraMajmuna()">USERI 💩</button>
+                            <button id="usraBtn" class="purple-btn brown-btn" style="font-size: 1.5em; padding: 15px;" onclick="usraMajmuna()">TI SI KITA U MOJIM USTIMA 🐒</button>
                             <div id="usraError" style="color: #ff3333; margin-top: 10px; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
                             
                             <div style="margin-top: 25px; text-align: left;">
@@ -578,7 +578,6 @@
                     if (!state.streaks) state.streaks = {};
                     if (!state.currentOdds) state.currentOdds = { daily: "1.29", skip: "3.60" };
                     
-                    // HIGHLANDER JACKPOT LOGIC - Automatski brise druge iz baze i ostavlja Shomaru (samo pri prvom ucitavanju ako je greska)
                     if (state.jackpotWinners && Object.keys(state.jackpotWinners).length > 1) {
                         state.jackpotWinners = { "Shomara": true };
                         if (isAdmin) { updateDoc(stateRef, { jackpotWinners: { "Shomara": true } }); }
@@ -746,7 +745,26 @@
             }
         };
 
-        window.downloadLog = () => { /* Retained */ };
+        window.downloadLog = () => {
+            if (!state || !state.chronologicalHistory || state.chronologicalHistory.length === 0) {
+                return alert("Nema istorije za skidanje.");
+            }
+            let text = "CASINO SKIPERINO - DAILY MEETING LOG\n";
+            text += "====================================\n\n";
+            state.chronologicalHistory.forEach((item, index) => {
+                text += `${index + 1}. Datum: ${item.date} | Ishod: ${item.outcome}\n`;
+            });
+            
+            const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "Skiperino_Daily_Log.txt";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        };
 
         function showSlotOverlay(msgHtml, bgColor) {
             const overlay = document.getElementById('slotOverlay');
@@ -773,7 +791,6 @@
             if (isSpinning || !state) return;
             const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             
-            // POHLEPNI COOLDOWN PROVERA
             if (state.jackpotWinners && state.jackpotWinners[player]) {
                 showSlotOverlay("🚫 ZABRANJENO! 🚫<br><span style='font-size:0.4em'>Ti si trenutni šampion!<br>Mašina je blokirana za tebe dok neko drugi ne obori Jackpot!</span>", "#ff3333"); 
                 return;
@@ -843,7 +860,7 @@
                 await updateDoc(stateRef, { 
                     [`balances.${player}`]: increment(wonJackpot), 
                     jackpot: 500, 
-                    jackpotWinners: { [player]: true }, // Ovo kompletno brise stare i upisuje novog!
+                    jackpotWinners: { [player]: true }, 
                     slotHistory: updatedHistory 
                 });
                 showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
