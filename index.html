@@ -89,7 +89,7 @@
         .brown-btn:active { transform: translateY(6px); box-shadow: none !important; }
 
         .collapse-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
-        .collapse-container.open { max-height: 1400px; opacity: 1; }
+        .collapse-container.open { max-height: 2000px; opacity: 1; }
         .history-container { max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 5px; padding: 10px; text-align: left; font-size: 0.9em; margin-top: 20px; }
         .history-container::-webkit-scrollbar { width: 8px; }
         .history-container::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
@@ -116,6 +116,27 @@
         .ball-selector { display: flex; justify-content: space-around; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #d4af37; flex-wrap: wrap; gap: 10px; }
         .ball-option { padding: 10px 15px; border-radius: 8px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 1.1em; border: 2px solid #444; opacity: 0.5; transition: all 0.2s; color: #fff; text-shadow: 1px 1px 2px #000; }
         .ball-option.active { opacity: 1; border-color: #fff; transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+        
+        /* --- BLACKJACK STYLES --- */
+        .bj-table { background: radial-gradient(circle, #0D5C22 0%, #063B13 100%); border: 5px solid #5C3A21; border-radius: 20px; padding: 20px; min-height: 250px; margin: 20px 0; position: relative; box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 10px 20px rgba(0,0,0,0.7); display: flex; flex-direction: column; justify-content: space-between; align-items: center;}
+        .bj-hand-area { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0;}
+        .bj-cards { display: flex; justify-content: center; min-height: 110px; }
+        .bj-card { width: 75px; height: 110px; background: radial-gradient(circle at center, #fff 0%, #f4f4f4 100%); border-radius: 8px; border: 1px solid #ccc; display: flex; align-items: center; justify-content: center; font-size: 2em; font-weight: bold; margin: 0 5px; box-shadow: 3px 3px 10px rgba(0,0,0,0.6); position: relative; font-family: Arial, sans-serif;}
+        .bj-card.red { color: #d00; }
+        .bj-card.black { color: #000; }
+        .bj-card.hidden { background: repeating-linear-gradient(45deg, #b02a2a, #b02a2a 10px, #fff 10px, #fff 20px); color: transparent; border: 2px solid #fff; }
+        .bj-label { font-family: 'Oswald', sans-serif; color: #d4af37; font-size: 1.2em; text-transform: uppercase; text-shadow: 1px 1px 2px #000; margin-bottom: 5px; background: rgba(0,0,0,0.5); padding: 2px 10px; border-radius: 10px; border: 1px solid #d4af37;}
+        .bj-controls { display: flex; gap: 10px; justify-content: center; width: 100%; max-width: 400px;}
+        .bj-btn { flex: 1; background: linear-gradient(to bottom, #444, #111); color: #fff; font-family: 'Oswald'; border: 2px solid #fff; border-radius: 8px; padding: 10px; font-size: 1.2em; cursor: pointer; text-shadow: 1px 1px 2px #000; box-shadow: 0 4px 0 #000; transition: all 0.1s;}
+        .bj-btn:hover:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #000; filter: brightness(1.2);}
+        .bj-btn:active:not(:disabled) { transform: translateY(4px); box-shadow: none;}
+        .bj-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: 0 4px 0 #000; filter: none;}
+        .bj-btn.action-hit { background: linear-gradient(to bottom, #00A86B, #004d26); border-color: #4dff4d; }
+        .bj-btn.action-stand { background: linear-gradient(to bottom, #ff3333, #990000); border-color: #ffcccc; }
+        .bj-btn.action-double { background: linear-gradient(to bottom, #ffdf00, #b8860b); color: #000; border-color: #fff; text-shadow: none; font-weight: bold;}
+        .bj-status { font-family: 'Oswald'; font-size: 1.5em; color: #fff; text-shadow: 1px 1px 3px #000; margin: 10px 0; min-height: 35px; font-weight: bold;}
+        .flow-state-btn { display: inline-block; margin-top: 15px; margin-bottom: 5px; background: linear-gradient(to right, #00C9FF, #92FE9D); color: #000; font-family: 'Oswald', sans-serif; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 1.3em; box-shadow: 0 5px 15px rgba(0, 201, 255, 0.4); text-transform: uppercase; letter-spacing: 1px; transition: transform 0.2s;}
+        .flow-state-btn:hover { transform: scale(1.05); }
     </style>
 </head>
 <body>
@@ -329,6 +350,58 @@
                     </div>
                 </div>
 
+                <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🃏 BLACK MARKO JACK</h3>
+                    <button class="purple-btn" id="toggleBjBtn" onclick="toggleBjGame()">✨ OPEN BLACK MARKO JACK ✨</button>
+                    
+                    <div id="bjGameContainer" class="collapse-container">
+                        <div style="padding-top: 15px;">
+                            <a href="https://www.youtube.com/watch?v=nWz-IPtxEPI&list=RDnWz-IPtxEPI&start_radio=1" target="_blank" class="flow-state-btn">🌊 ENTER FLOW STATE 🌊</a>
+                            
+                            <div style="display: flex; justify-content: space-between; font-family: 'Oswald', sans-serif; font-size: 1.2em; margin-top: 15px;">
+                                <div style="color: #aaa;">BALANCE: <span id="bjPlayerBalance" style="color: #fff;">0</span></div>
+                            </div>
+
+                            <div class="bj-table">
+                                <div class="bj-hand-area">
+                                    <div class="bj-label">DEALER: MARKO JACK <span id="bjDealerScore" style="color:#fff; margin-left:10px;"></span></div>
+                                    <div class="bj-cards" id="bjDealerCards"></div>
+                                </div>
+                                
+                                <div class="bj-status" id="bjStatusText">PLACE YOUR BET TO PLAY</div>
+                                
+                                <div class="bj-hand-area">
+                                    <div class="bj-label">PLAYER: <span id="bjPlayerNameDisplay"></span> <span id="bjPlayerScore" style="color:#fff; margin-left:10px;"></span></div>
+                                    <div class="bj-cards" id="bjPlayerCards"></div>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 15px;">
+                                <div style="flex: 2; text-align: left;">
+                                    <label>Wager (Cojke Coins):</label>
+                                    <input type="number" id="bjBetAmount" min="10" step="10" placeholder="Min 10" style="margin-bottom:0;">
+                                </div>
+                                <div style="flex: 1;">
+                                    <button class="purple-btn" id="bjDealBtn" style="margin-top: 18px; font-size: 1.2em;" onclick="startBjGame()">DEAL</button>
+                                </div>
+                            </div>
+
+                            <div class="bj-controls">
+                                <button class="bj-btn action-hit" id="bjHitBtn" onclick="hitBj()" disabled>HIT</button>
+                                <button class="bj-btn action-stand" id="bjStandBtn" onclick="standBj()" disabled>STAND</button>
+                                <button class="bj-btn action-double" id="bjDoubleBtn" onclick="doubleBj()" disabled>DOUBLE</button>
+                            </div>
+                            
+                            <div id="bjError" style="color: #ff3333; margin-top: 10px; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
+                            
+                            <div style="margin-top: 25px; text-align: left;">
+                                <h4 style="margin: 0; color: #d4af37; font-family: 'Oswald', sans-serif; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">📜 BLACKJACK RECENT HISTORY</h4>
+                                <div class="history-container" id="bjHistoryFeed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="side-col">
@@ -368,10 +441,11 @@
                     <label style="color:#d4af37;">Mini-Games Admin</label>
                     <input type="number" id="adminJackpotAmount" placeholder="Set exact Jackpot amount">
                     <button onclick="adminSetJackpot()" style="background: linear-gradient(to bottom, #9d00ff, #4a0080); color: white; margin-bottom: 10px;">Set Jackpot</button>
-                    <div style="display:flex; gap:10px; margin-bottom: 15px;">
-                        <button onclick="adminClearHistory('slotHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Slots</button>
-                        <button onclick="adminClearHistory('plinkoHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Plinko</button>
-                        <button onclick="adminClearHistory('usraHistory')" style="background: linear-gradient(to bottom, #8B4513, #3d1c00); color: white; font-size:0.8em; padding:10px;">Wipe Usrane</button>
+                    <div style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom: 15px;">
+                        <button onclick="adminClearHistory('slotHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.7em; padding:8px; flex:1;">Wipe Slots</button>
+                        <button onclick="adminClearHistory('plinkoHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.7em; padding:8px; flex:1;">Wipe Plinko</button>
+                        <button onclick="adminClearHistory('usraHistory')" style="background: linear-gradient(to bottom, #8B4513, #3d1c00); color: white; font-size:0.7em; padding:8px; flex:1;">Wipe Usrane</button>
+                        <button onclick="adminClearHistory('bjHistory')" style="background: linear-gradient(to bottom, #114411, #002200); color: white; font-size:0.7em; padding:8px; flex:1;">Wipe BJ</button>
                     </div>
                     <hr>
 
@@ -441,6 +515,7 @@
             slotHistory: [], 
             plinkoHistory: [],
             usraHistory: [],
+            bjHistory: [],
             jackpotWinners: { "Shomara": true } 
         };
 
@@ -516,12 +591,14 @@
                         currentUserPlayerName = userDoc.exists() ? userDoc.data().playerName : "Unknown";
                         document.getElementById('currentUserLabel').innerText = `[ Operative: ${currentUserPlayerName} ]`;
                         document.getElementById('betPlayer').value = currentUserPlayerName;
+                        document.getElementById('bjPlayerNameDisplay').innerText = currentUserPlayerName.toUpperCase();
                     } else {
                         document.getElementById('currentUserLabel').innerText = `[ PIT BOSS MODE ]`;
                         document.getElementById('pitbossPanel').style.display = "block";
                         document.getElementById('betPlayer').disabled = false; 
                         document.getElementById('quotaDaily').removeAttribute('readonly'); 
                         document.getElementById('quotaSkip').removeAttribute('readonly');
+                        document.getElementById('bjPlayerNameDisplay').innerText = "PIT BOSS";
                     }
                     startDatabaseSync();
                 } catch(e) {
@@ -571,6 +648,7 @@
                     if (!state.slotHistory) state.slotHistory = [];
                     if (!state.plinkoHistory) state.plinkoHistory = [];
                     if (!state.usraHistory) state.usraHistory = [];
+                    if (!state.bjHistory) state.bjHistory = [];
                     if (!state.jackpotWinners) state.jackpotWinners = { "Shomara": true };
                     if (!state.bets) state.bets = [];
                     if (!state.chronologicalHistory) state.chronologicalHistory = [];
@@ -586,6 +664,7 @@
                     if (state.plinkoHistory.length > 30) state.plinkoHistory = state.plinkoHistory.slice(-30);
                     if (state.slotHistory.length > 30) state.slotHistory = state.slotHistory.slice(-30);
                     if (state.usraHistory.length > 30) state.usraHistory = state.usraHistory.slice(-30);
+                    if (state.bjHistory.length > 30) state.bjHistory = state.bjHistory.slice(-30);
                 }
                 
                 let bBtn = document.getElementById("backBtnForce");
@@ -1128,6 +1207,281 @@
             document.getElementById('usraAmount').value = '';
         };
 
+        // ==========================================
+        // BLACK MARKO JACK (BLACKJACK)
+        // ==========================================
+        let bjDeck = [];
+        let bjPlayerHand = [];
+        let bjDealerHand = [];
+        let bjCurrentBet = 0;
+        let bjGameState = 'IDLE'; // IDLE, PLAYING, DONE
+
+        window.toggleBjGame = () => {
+            const container = document.getElementById('bjGameContainer');
+            container.classList.toggle('open');
+            document.getElementById('toggleBjBtn').innerText = container.classList.contains('open') ? "🔼 CLOSE BLACK MARKO JACK 🔼" : "✨ OPEN BLACK MARKO JACK ✨";
+        };
+
+        function buildBjDeck() {
+            const suits = ['♠', '♥', '♦', '♣'];
+            const values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+            let deck = [];
+            for (let s of suits) {
+                for (let v of values) {
+                    let weight = parseInt(v);
+                    if (v === 'J' || v === 'Q' || v === 'K') weight = 10;
+                    if (v === 'A') weight = 11;
+                    deck.push({ suit: s, value: v, weight: weight, color: (s==='♥'||s==='♦') ? 'red' : 'black' });
+                }
+            }
+            // Shuffle
+            for (let i = deck.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [deck[i], deck[j]] = [deck[j], deck[i]];
+            }
+            return deck;
+        }
+
+        function getBjScore(hand) {
+            let score = 0;
+            let aces = 0;
+            for (let card of hand) {
+                score += card.weight;
+                if (card.value === 'A') aces += 1;
+            }
+            while (score > 21 && aces > 0) {
+                score -= 10;
+                aces -= 1;
+            }
+            return score;
+        }
+
+        function renderBjBoard(hideDealerSecond = false) {
+            const dealerDiv = document.getElementById('bjDealerCards');
+            const playerDiv = document.getElementById('bjPlayerCards');
+            dealerDiv.innerHTML = '';
+            playerDiv.innerHTML = '';
+
+            // Draw Dealer
+            bjDealerHand.forEach((card, index) => {
+                if (index === 1 && hideDealerSecond) {
+                    dealerDiv.innerHTML += `<div class="bj-card hidden">?</div>`;
+                } else {
+                    dealerDiv.innerHTML += `<div class="bj-card ${card.color}">${card.value}${card.suit}</div>`;
+                }
+            });
+
+            // Draw Player
+            bjPlayerHand.forEach(card => {
+                playerDiv.innerHTML += `<div class="bj-card ${card.color}">${card.value}${card.suit}</div>`;
+            });
+
+            // Update scores text
+            document.getElementById('bjPlayerScore').innerText = `[${getBjScore(bjPlayerHand)}]`;
+            if (hideDealerSecond) {
+                document.getElementById('bjDealerScore').innerText = `[${bjDealerHand[0].weight}]`;
+            } else {
+                document.getElementById('bjDealerScore').innerText = `[${getBjScore(bjDealerHand)}]`;
+            }
+        }
+
+        function updateBjControls() {
+            const hitBtn = document.getElementById('bjHitBtn');
+            const standBtn = document.getElementById('bjStandBtn');
+            const doubleBtn = document.getElementById('bjDoubleBtn');
+            const dealBtn = document.getElementById('bjDealBtn');
+            const betInput = document.getElementById('bjBetAmount');
+
+            if (bjGameState === 'PLAYING') {
+                hitBtn.disabled = false;
+                standBtn.disabled = false;
+                // Can only double on first 2 cards if enough balance
+                const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+                const bal = state.balances[player] || 0;
+                if (bjPlayerHand.length === 2 && bal >= bjCurrentBet) {
+                    doubleBtn.disabled = false;
+                } else {
+                    doubleBtn.disabled = true;
+                }
+                dealBtn.disabled = true;
+                betInput.disabled = true;
+            } else {
+                hitBtn.disabled = true;
+                standBtn.disabled = true;
+                doubleBtn.disabled = true;
+                dealBtn.disabled = false;
+                betInput.disabled = false;
+            }
+        }
+
+        window.startBjGame = async () => {
+            if (!state) return;
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const amount = parseFloat(document.getElementById('bjBetAmount').value);
+            const errorDiv = document.getElementById('bjError');
+
+            if (isNaN(amount) || amount < 10) {
+                errorDiv.innerText = "Minimalni ulog je 10 Cojke Coins.";
+                return;
+            }
+            
+            const bal = state.balances[player] || 0;
+            if (bal < amount) {
+                errorDiv.innerText = "Nemaš dovoljno novčića da sedneš za sto!";
+                return;
+            }
+
+            errorDiv.innerText = "";
+            document.getElementById('bjStatusText').innerText = "GOOD LUCK!";
+            document.getElementById('bjStatusText').style.color = "#fff";
+
+            bjCurrentBet = amount;
+            bjGameState = 'PLAYING';
+            bjDeck = buildBjDeck();
+            
+            // Deduct initial bet
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, { [`balances.${player}`]: increment(-bjCurrentBet) });
+
+            // Initial deal
+            bjPlayerHand = [bjDeck.pop(), bjDeck.pop()];
+            bjDealerHand = [bjDeck.pop(), bjDeck.pop()];
+
+            renderBjBoard(true); // hide dealer 2nd card
+            updateBjControls();
+
+            // Instant Blackjack check
+            const pScore = getBjScore(bjPlayerHand);
+            if (pScore === 21) {
+                await resolveBjGame('BLACKJACK');
+            }
+        };
+
+        window.hitBj = async () => {
+            bjPlayerHand.push(bjDeck.pop());
+            renderBjBoard(true);
+            const pScore = getBjScore(bjPlayerHand);
+            
+            // Disable double down after hit
+            document.getElementById('bjDoubleBtn').disabled = true;
+
+            if (pScore > 21) {
+                await resolveBjGame('BUST');
+            } else if (pScore === 21) {
+                await standBj(); // auto stand on 21
+            }
+        };
+
+        window.doubleBj = async () => {
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const stateRef = doc(db, "casino", "state");
+            
+            // Deduct second bet
+            await updateDoc(stateRef, { [`balances.${player}`]: increment(-bjCurrentBet) });
+            bjCurrentBet *= 2; // Bet doubled
+            
+            bjPlayerHand.push(bjDeck.pop());
+            renderBjBoard(true);
+            const pScore = getBjScore(bjPlayerHand);
+
+            if (pScore > 21) {
+                await resolveBjGame('BUST');
+            } else {
+                await standBj(); // Double means stand immediately after 1 card
+            }
+        };
+
+        window.standBj = async () => {
+            bjGameState = 'DEALER_TURN';
+            updateBjControls();
+            renderBjBoard(false); // Reveal dealer card
+
+            // Dealer hits on soft 17 (standard) or stands on 17+
+            while (getBjScore(bjDealerHand) < 17) {
+                await new Promise(r => setTimeout(r, 600)); // suspense pause
+                bjDealerHand.push(bjDeck.pop());
+                renderBjBoard(false);
+            }
+
+            const pScore = getBjScore(bjPlayerHand);
+            const dScore = getBjScore(bjDealerHand);
+
+            if (dScore > 21) {
+                await resolveBjGame('DEALER_BUST');
+            } else if (pScore > dScore) {
+                await resolveBjGame('WIN');
+            } else if (pScore < dScore) {
+                await resolveBjGame('LOSS');
+            } else {
+                await resolveBjGame('PUSH');
+            }
+        };
+
+        async function resolveBjGame(outcome) {
+            bjGameState = 'DONE';
+            updateBjControls();
+            renderBjBoard(false); // Show all cards
+
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            let winAmount = 0;
+            let msg = "";
+            let historyText = "";
+            const statusEl = document.getElementById('bjStatusText');
+
+            const lossMsgs = [
+                `${player} pobeda je bila van dometa`,
+                `${player} pobeda je bila van dodira`,
+                `${player} digitalac`
+            ];
+            let randomLoss = lossMsgs[Math.floor(Math.random() * lossMsgs.length)];
+
+            if (outcome === 'BLACKJACK') {
+                winAmount = bjCurrentBet * 2.5; // 3:2 payout (return bet + 1.5x)
+                msg = `BLACKJACK! YOU WIN ${winAmount}`;
+                statusEl.style.color = "#FFDF00";
+                historyText = `<span class="sh-jackpot">BLACKJACK!</span> ${player} je uzeo Premium W (+${winAmount})`;
+            } 
+            else if (outcome === 'WIN' || outcome === 'DEALER_BUST') {
+                winAmount = bjCurrentBet * 2; // Return bet + win
+                msg = `YOU WIN! Payout: ${winAmount}`;
+                statusEl.style.color = "#4dff4d";
+                historyText = `<span class="sh-win">WIN</span> ${player} je uzeo Premium W (+${winAmount})`;
+            }
+            else if (outcome === 'PUSH') {
+                winAmount = bjCurrentBet; // Return original bet
+                msg = "PUSH! BET RETURNED.";
+                statusEl.style.color = "#ccc";
+                historyText = `<span style="color:#aaa;">PUSH</span> ${player} je izvukao nerešeno (vraćen ulog od ${winAmount}).`;
+            }
+            else { // LOSS or BUST
+                winAmount = 0;
+                msg = outcome === 'BUST' ? "BUST! YOU LOSE." : "DEALER WINS!";
+                statusEl.style.color = "#ff3333";
+                historyText = `<span class="sh-loss">LOSS</span> ${randomLoss} (-${bjCurrentBet})`;
+            }
+
+            statusEl.innerText = msg;
+
+            // Save to Firebase
+            const stateRef = doc(db, "casino", "state");
+            const historyEntry = {
+                player: player,
+                bet: bjCurrentBet,
+                outcome: outcome,
+                text: historyText,
+                time: Date.now()
+            };
+
+            let updatedBjHistory = [...state.bjHistory, historyEntry];
+            if (updatedBjHistory.length > 30) updatedBjHistory = updatedBjHistory.slice(-30);
+
+            await updateDoc(stateRef, {
+                [`balances.${player}`]: increment(winAmount),
+                bjHistory: updatedBjHistory
+            });
+        }
+
+
         // MAIN RENDER LOOP 
         function renderAll() {
             if(!state) return;
@@ -1216,6 +1570,7 @@
                 const safeGameBal = state.balances[displayPlayer] || 0;
                 document.getElementById('slotPlayerBalance').innerText = safeGameBal.toFixed(2);
                 document.getElementById('plinkoPlayerBalance').innerText = safeGameBal.toFixed(2);
+                document.getElementById('bjPlayerBalance').innerText = safeGameBal.toFixed(2);
             }
             
             // SLOT MACHINE RENDER
@@ -1254,6 +1609,16 @@
                     return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
                 }).join('');
             } else { usraFeed.innerHTML = "<div style='color: #888; text-align:center;'>Niko još nije usran. Mir u ofisu.</div>"; }
+
+            // BLACKJACK RENDER
+            const bjFeed = document.getElementById('bjHistoryFeed');
+            if (state.bjHistory && state.bjHistory.length > 0) {
+                const recentBj = [...state.bjHistory].slice(-30).reverse(); 
+                bjFeed.innerHTML = recentBj.map(h => {
+                    let entry = `[${new Date(h.time).toLocaleTimeString()}] ${h.text}`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                }).join('');
+            } else { bjFeed.innerHTML = "<div style='color: #888; text-align:center;'>Nema odigranih ruku. Diler čeka.</div>"; }
         }
     </script>
 </body>
