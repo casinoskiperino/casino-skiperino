@@ -396,6 +396,7 @@
         const db = getFirestore(app);
 
         const ADMIN_EMAIL = "pitboss@skiperino.com"; 
+        // OVA LISTA JE SADA GLAVNI IZVOR ZA LEADERBOARD
         const playersList = ["Shomara", "Nenad", "Sladja", "Cojkana", "Milance", "Danilo", "OG", "rat.cleaner", "KOL", "Markov", "Shobibi", "Skecmi"];
         
         let currentUser = null;
@@ -439,7 +440,7 @@
         const adjSelect = document.getElementById('adjPlayer');
         const usraSelect = document.getElementById('usraTarget');
         
-        playersList.sort().forEach(p => {
+        [...playersList].sort().forEach(p => {
             authPlayerSelect.add(new Option(p, p));
             betSelect.add(new Option(p, p));
             adjSelect.add(new Option(p, p));
@@ -513,7 +514,6 @@
             }
         });
 
-        // 🛡️ OVDE SMO DODALI PANCIR: Ako fali bilo koji niz, skripta ga sama napravi
         function startDatabaseSync() {
             const stateRef = doc(db, "casino", "state");
             onSnapshot(stateRef, async (docSnap) => {
@@ -557,7 +557,10 @@
             const currentGlobalTime = new Date(Date.now() + timeOffset);
             const belgradeStr = currentGlobalTime.toLocaleString("en-US", {timeZone: "Europe/Belgrade"});
             const belgradeTime = new Date(belgradeStr);
-            const ledgerDay = new Date(state.currentDate);
+            // FALLBACK ZA DATUM
+            const safeDate = state.currentDate || new Date().getTime();
+            const ledgerDay = new Date(safeDate);
+            
             const isTargetDayOrLater = (
                 belgradeTime.getFullYear() > ledgerDay.getFullYear() ||
                 (belgradeTime.getFullYear() === ledgerDay.getFullYear() && belgradeTime.getMonth() > ledgerDay.getMonth()) ||
@@ -620,7 +623,7 @@
                 else if (playersWhoBet[player].won) state.streaks[player] = (state.streaks[player] || 0) + 1;
             }
             state.bets = []; 
-            const dateObj = new Date(state.currentDate);
+            const dateObj = new Date(state.currentDate || new Date().getTime());
             const dayOfWeek = dateObj.getDay();
             if (state.history[dayOfWeek]) {
                 state.history[dayOfWeek].total += 1;
@@ -629,7 +632,7 @@
             const dateStr = dateObj.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' });
             state.chronologicalHistory.push({ date: dateStr, outcome: actual });
             state.skipStreak = actual === "SKIP" ? state.skipStreak + 1 : 0;
-            let d = new Date(state.currentDate);
+            let d = new Date(state.currentDate || new Date().getTime());
             d.setDate(d.getDate() + 1);
             if (d.getDay() === 6) d.setDate(d.getDate() + 2); 
             state.currentDate = d.getTime();
@@ -691,6 +694,17 @@
         window.downloadLog = () => { /* Retained */ };
 
         // ==========================================
+        // VRAĆENA FUNKCIJA KOJA JE CRASH-OVALA IGRU
+        // ==========================================
+        function showSlotOverlay(msgHtml, bgColor) {
+            const overlay = document.getElementById('slotOverlay');
+            document.getElementById('slotOverlayMsg').innerHTML = msgHtml;
+            overlay.style.backgroundColor = bgColor === "#000" ? "rgba(0,0,0,0.9)" : "rgba(255,51,51,0.9)";
+            document.getElementById('slotOverlayMsg').style.color = bgColor === "#000" ? "#fff" : "#fff";
+            overlay.style.display = "flex";
+        }
+
+        // ==========================================
         // ŠOMARINE ZABRANJENE VOĆKICE (SLOT MACHINE)
         // ==========================================
         let isSpinning = false;
@@ -715,9 +729,11 @@
 
             const currentSlotBet = parseInt(document.getElementById('slotBetSelect').value);
             
+            // BEZBEDNA PROVERA BALANSA
             const bal = state.balances[player] || 0;
             if (bal < currentSlotBet) {
-                showSlotOverlay("💸 BROKE! 💸<br><span style='font-size:0.4em'>Insufficient Cojke Coins.</span>", "#ff3333"); return;
+                showSlotOverlay("💸 BROKE! 💸<br><span style='font-size:0.4em'>Insufficient Cojke Coins.</span>", "#ff3333"); 
+                return;
             }
 
             isSpinning = true;
@@ -1009,7 +1025,7 @@
                 return;
             }
 
-            const sortedPlayers = Object.keys(state.balances).sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
+            const sortedPlayers = [...playersList].sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
             if (sortedPlayers[0] === attacker && !isAdmin) {
                 errorDiv.innerText = "Ti si prvi na tabeli! Lider nema pravo da userava sirotinju.";
                 return;
@@ -1048,7 +1064,8 @@
                 placeBtn.disabled = true; placeBtn.innerText = "FELT LOCKED";
             } else {
                 const bNow = new Date(new Date(Date.now() + timeOffset).toLocaleString("en-US", {timeZone: "Europe/Belgrade"}));
-                const ledgerDay = new Date(state.currentDate);
+                const safeDate = state.currentDate || new Date().getTime();
+                const ledgerDay = new Date(safeDate);
                 const bTarget = new Date(ledgerDay.getFullYear(), ledgerDay.getMonth(), ledgerDay.getDate(), 8, 45, 0);
                 let diff = bTarget - bNow; if (diff < 0) diff = 0;
                 const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -1070,7 +1087,8 @@
                 `<div class="history-badge ${item.outcome === 'SKIP' ? 'history-skip' : 'history-daily'}">${item.outcome}<span class="history-date">${item.date}</span></div>`
             ).join('');
             
-            const d = new Date(state.currentDate);
+            const safeDate2 = state.currentDate || new Date().getTime();
+            const d = new Date(safeDate2);
             document.getElementById('displayDate').innerText = "📅 " + d.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
             document.getElementById('displayStreak').innerText = state.skipStreak;
             
@@ -1082,8 +1100,8 @@
                 document.getElementById('quotaSkip').addEventListener('input', saveOdds);
             }
 
-            // LEADERBOARD RENDER
-            const sortedPlayers = Object.keys(state.balances).sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
+            // NEUNIŠTIVI LEADERBOARD RENDER
+            const sortedPlayers = [...playersList].sort((a, b) => (state.balances[b] || 0) - (state.balances[a] || 0));
             const tbodyL = document.getElementById('leaderboardBody');
             tbodyL.innerHTML = sortedPlayers.map((p, index) => {
                 const rankDisplay = index === 0 ? "👑 1" : (index + 1);
@@ -1114,7 +1132,7 @@
                     </tr>`).join('');
             }
 
-            // UI BALANCE RENDER FOR MINIGAMES (OVO VIŠE NIKADA NEĆE PUKNUTI)
+            // UI BALANCE RENDER FOR MINIGAMES
             const displayPlayer = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
             if(displayPlayer) {
                 const safeGameBal = state.balances[displayPlayer] || 0;
