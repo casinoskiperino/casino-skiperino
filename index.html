@@ -97,6 +97,1157 @@
         .sh-loss { color: #ff4d4d; }
         .sh-jackpot { color: #ffdf00; font-weight: bold; text-shadow: 0 0 5px #ffdf00; }
         
+        #slotOverlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10; border-radius: 15px; align-items: center; justify-content: center; flex-direction: column; }
+        .overlay-text { font-family: 'Oswald', sans-serif; font-size: 3em; font-weight: 700; text-align: center; margin-bottom: 20px; }
+
+        /* --- SLOT MACHINE --- */
+        .slot-jackpot-display { font-size: 3em; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; color: #ffdf00; text-shadow: 0 0 20px #ffdf00, 2px 2px 0px #8b0000; margin: 15px 0; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 10px; border: 2px solid #d4af37; }
+        .slot-machine-grid { display: flex; justify-content: center; gap: 20px; margin: 30px auto; background: radial-gradient(circle at center, #262626 0%, #050505 100%); padding: 30px; border-radius: 20px; border: 6px solid #d4af37; box-shadow: inset 0 0 40px rgba(0,0,0,0.9), 0 15px 30px rgba(0,0,0,0.8), 0 0 20px rgba(212, 175, 55, 0.4), inset 0 0 0 2px #fff8b0; position: relative; max-width: 450px; }
+        .slot-reel { background: linear-gradient(180deg, #d9d0c1 0%, #ffffff 25%, #ffffff 75%, #d9d0c1 100%); border: 4px solid #b8860b; border-radius: 12px; width: 110px; height: 140px; display: flex; align-items: center; justify-content: center; font-size: 4.5em; box-shadow: inset 0 25px 20px -10px rgba(0,0,0,0.7), inset 0 -25px 20px -10px rgba(0,0,0,0.7), 0 5px 15px rgba(0,0,0,0.8); text-shadow: 3px 5px 5px rgba(0,0,0,0.4); overflow: hidden; position: relative; }
+        .slot-reel::after { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 45%; background: linear-gradient(to bottom, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 100%); pointer-events: none; border-radius: 8px 8px 0 0; }
+        .slot-legend { background: rgba(0,0,0,0.5); padding: 10px; border-radius: 5px; font-size: 1.1em; margin-bottom: 20px; border: 1px dashed #d4af37; color: #fff; }
+
+        /* --- PLINKO MACHINE PREMIUM UPGRADES --- */
+        .plinko-board-container { width: 100%; max-width: 700px; height: 650px; margin: 20px auto; background: radial-gradient(circle at top, #2a0a4a 0%, #05010f 100%); border: 4px solid #d4af37; border-radius: 15px; position: relative; overflow: hidden; box-shadow: inset 0 0 40px #000, 0 10px 20px rgba(0,0,0,0.8); }
+        .plinko-peg { position: absolute; width: 12px; height: 12px; background: radial-gradient(circle at 30% 30%, #ffffff 40%, #e6e6e6 80%, #cccccc); border-radius: 50%; transform: translate(-50%, -50%); z-index: 2; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.7), inset 0 -2px 3px rgba(0,0,0,0.2); }
+        .plinko-bucket { position: absolute; bottom: 0; height: 50px; display: flex; align-items: center; justify-content: center; transform: translateX(-50%); font-weight: bold; font-family: 'Oswald'; border-radius: 0 0 8px 8px; box-sizing: border-box; box-shadow: inset 0 10px 15px -5px rgba(0,0,0,0.8); border-top: 4px solid; color: #fff; text-shadow: 1px 1px 2px #000, 0 0 5px currentColor; z-index: 1; }
+        .plinko-ball { position: absolute; width: 18px; height: 18px; border-radius: 50%; transform: translate(-50%, -50%); z-index: 10; box-shadow: 0 0 15px currentColor, inset -3px -3px 5px rgba(0,0,0,0.5), inset 2px 2px 5px rgba(255,255,255,0.8); }
+        .floating-win { position: absolute; font-family: 'Oswald', sans-serif; font-size: 1.5em; font-weight: bold; transform: translate(-50%, -50%); transition: top 1s ease-out, opacity 1s ease-out; z-index: 20; pointer-events: none; text-shadow: 1px 1px 3px #000; }
+        .ball-selector { display: flex; justify-content: space-around; background: rgba(0,0,0,0.6); padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #d4af37; flex-wrap: wrap; gap: 10px; }
+        .ball-option { padding: 10px 15px; border-radius: 8px; cursor: pointer; font-family: 'Oswald', sans-serif; font-size: 1.1em; border: 2px solid #444; opacity: 0.5; transition: all 0.2s; color: #fff; text-shadow: 1px 1px 2px #000; }
+        .ball-option.active { opacity: 1; border-color: #fff; transform: scale(1.05); box-shadow: 0 0 15px currentColor; }
+    </style>
+</head>
+<body>
+
+    <div id="loginOverlay">
+        <div style="text-align: center; position: relative; z-index: 1;">
+            <img src="https://img.icons8.com/color/96/diamond.png" alt="diamond" style="filter: brightness(0.8);">
+        </div>
+        <h1 style="font-size: 3em; margin-bottom: 30px;">Casino Skiperino</h1>
+        <div class="login-box">
+            <h3 id="authTitle" style="border:none; margin-bottom: 5px;">Enter The Vault</h3>
+            <p style="color: #bbb; margin-bottom: 20px; font-size: 0.9em; text-shadow: 1px 1px 2px #000;">Authorized personnel only.</p>
+            
+            <input type="email" id="authEmail" placeholder="Email Address">
+            <input type="password" id="authPassword" placeholder="Password">
+            
+            <div id="registerFields" style="display: none;">
+                <label>Select Operative Identity:</label>
+                <select id="authPlayerName"></select>
+            </div>
+
+            <button onclick="handleAuth()">Login</button>
+            <div class="auth-toggle" id="authToggleBtn" onclick="toggleAuthMode()">Need an account? Register here.</div>
+            <div id="authError" style="color: #ff3333; margin-top: 15px; font-size: 0.9em; font-weight: bold;"></div>
+        </div>
+        <div class="loading-text" id="syncingText">Syncing with Syndicate Database...</div>
+    </div>
+
+    <div id="mainDashboard">
+        <div style="text-align: center; padding-top: 10px; position: relative; z-index: 1;">
+            <img src="https://img.icons8.com/color/96/diamond.png" alt="diamond" style="filter: brightness(0.8);">
+        </div>
+        <h1>Casino Skiperino</h1>
+        <div class="header-subtitle">High Limit Sportsbook Lounge <span id="currentUserLabel" style="color:#fff275;"></span></div>
+        
+        <div class="container" id="appContainer">
+            <div class="main-col">
+                <div class="card" style="text-align: center;">
+                    <h3 id="displayDate" style="border: none;">📅 Date: Loading...</h3>
+                    <div class="streak-counter">
+                        Current SKIP Streak: <span id="displayStreak" class="streak-number">0</span> days
+                    </div>
+                    
+                    <div class="odds-container">
+                        <div class="odds-box">
+                            <div class="odds-label">DAILY MEETING</div>
+                            <div class="odds-value">
+                                <input type="number" id="quotaDaily" class="odds-input" step="0.01" readonly>
+                                <span class="odds-x">x</span>
+                            </div>
+                        </div>
+                        <div class="odds-box">
+                            <div class="odds-label">NO MEETING (SKIP)</div>
+                            <div class="odds-value">
+                                <input type="number" id="quotaSkip" class="odds-input" step="0.01" readonly>
+                                <span class="odds-x">x</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 15px;">
+                    <h3 style="font-size: 1.2em; border: none; margin-bottom: 10px; color: #fff;">⏪ Past 5 Days Trend</h3>
+                    <div id="past5container"></div>
+                </div>
+
+                <div class="card" id="bettingKioskCard">
+                    <h3>🎲 Betting Kiosk</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label>Select Player:</label>
+                            <select id="betPlayer" disabled></select>
+                        </div>
+                        <div>
+                            <label>Bet Amount (Cojke Coins):</label>
+                            <input type="number" id="betAmount" min="1" step="10" placeholder="Min 10">
+                        </div>
+                    </div>
+
+                    <label>Prediction:</label>
+                    <select id="betPrediction">
+                        <option value="DAILY">DAILY MEETING HAPPENS</option>
+                        <option value="SKIP">MEETING IS SKIPPED</option>
+                    </select>
+
+                    <button id="placeBetBtn" onclick="placeBet()">Place Bet on Felt</button>
+                    <div id="betError" style="color: #ff3333; margin-top: 15px; text-align: center; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
+                </div>
+
+                <div class="card">
+                    <h3>🎟️ Active Bets Slip</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Player</th><th>Prediction</th><th>Amount</th><th>Potent. Win</th><th>Action</th></tr>
+                        </thead>
+                        <tbody id="betsTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🎰 Šomarine Voćkice</h3>
+                    <button class="purple-btn" id="toggleSlotBtn" onclick="toggleSlotGame()">✨ OPEN SLOT MACHINE ✨</button>
+                    
+                    <div id="slotGameContainer" class="collapse-container">
+                        <div id="slotOverlay">
+                            <div id="slotOverlayMsg" class="overlay-text"></div>
+                            <button class="purple-btn" style="width: 200px;" onclick="closeSlotOverlay()">CONTINUE</button>
+                        </div>
+
+                        <div style="padding-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; font-family: 'Oswald', sans-serif; font-size: 1.2em;">
+                                <div style="color: #aaa;">BALANCE: <span id="slotPlayerBalance" style="color: #fff;">0</span></div>
+                                <div style="color: #aaa;">BET: <span id="slotCurrentBetDisplay" style="color: #fff;">10</span></div>
+                            </div>
+
+                            <div class="slot-jackpot-display">
+                                JACKPOT: <br> <span id="slotJackpotText">500</span> 🪙
+                            </div>
+                            
+                            <div class="slot-legend">
+                                🍒: 1x | 🍋: 2x | 🍉: 3x | 🍇: 5x | 💎: <strong>JACKPOT</strong>
+                            </div>
+
+                            <div class="slot-machine-grid">
+                                <div class="slot-reel" id="reel1">🍒</div>
+                                <div class="slot-reel" id="reel2">🍋</div>
+                                <div class="slot-reel" id="reel3">🍉</div>
+                            </div>
+                            
+                            <div style="margin-bottom: 20px; text-align: left;">
+                                <label>Select Wager (Cojke Coins):</label>
+                                <select id="slotBetSelect" onchange="document.getElementById('slotCurrentBetDisplay').innerText = this.value">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                            
+                            <button id="spinBtn" class="purple-btn" style="font-size: 2em; padding: 15px;" onclick="spinSlots()">SPIN</button>
+                            
+                            <div style="margin-top: 25px; text-align: left;">
+                                <h4 style="margin: 0; color: #d4af37; font-family: 'Oswald', sans-serif; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">📜 SLOTS RECENT HISTORY</h4>
+                                <div class="history-container" id="slotHistoryFeed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">🔺 Cojketova Piramida Pohlepe</h3>
+                    <button class="purple-btn" id="togglePlinkoBtn" onclick="togglePlinkoGame()">✨ OPEN PLINKO MACHINE ✨</button>
+                    
+                    <div id="plinkoGameContainer" class="collapse-container">
+                        <div style="padding-top: 15px;">
+                            <div style="display: flex; justify-content: space-between; font-family: 'Oswald', sans-serif; font-size: 1.2em; margin-bottom: 10px;">
+                                <div style="color: #aaa;">BALANCE: <span id="plinkoPlayerBalance" style="color: #fff;">0</span></div>
+                            </div>
+
+                            <label style="text-align: left; color:#d4af37;">Select Ball to Buy & Drop:</label>
+                            <div class="ball-selector">
+                                <div class="ball-option active" style="color: #FF9933; border-color:#FF9933;" onclick="setPlinkoBall(10, this)">Bronze (10)</div>
+                                <div class="ball-option" style="color: #FFFFFF;" onclick="setPlinkoBall(20, this)">Silver (20)</div>
+                                <div class="ball-option" style="color: #FFEE58;" onclick="setPlinkoBall(30, this)">Gold (30)</div>
+                                <div class="ball-option" style="color: #39FF14;" onclick="setPlinkoBall(50, this)">Đorđe David (50)</div>
+                                <div class="ball-option" style="color: #00FFFF;" onclick="setPlinkoBall(100, this)">Bajaga (100)</div>
+                            </div>
+
+                            <div class="plinko-board-container" id="plinkoBoard">
+                                </div>
+                            
+                            <button id="dropPlinkoBtn" class="purple-btn" style="font-size: 2em; padding: 15px;" onclick="dropPlinkoBall()">DROP BALL 🔻</button>
+                            <div id="plinkoError" style="color: #ff3333; margin-top: 10px; font-weight: bold;"></div>
+                            
+                            <div style="margin-top: 25px; text-align: left;">
+                                <h4 style="margin: 0; color: #d4af37; font-family: 'Oswald', sans-serif; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">📜 PLINKO RECENT HISTORY</h4>
+                                <div class="history-container" id="plinkoHistoryFeed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 25px; text-align: center; border-color: #d4af37;">
+                    <h3 style="color: #ffdf00; border-bottom: 2px dashed #d4af37;">💩 Useri Malog Majmuna</h3>
+                    <button class="purple-btn" id="toggleUsraBtn" onclick="toggleUsraGame()">✨ OPEN USERI MALOG MAJMUNA ✨</button>
+                    
+                    <div id="usraGameContainer" class="collapse-container">
+                        <div style="padding-top: 15px;">
+                            <h4 style="color: #fff; text-shadow: 1px 1px 2px #000; font-size: 1.3em;">Kojeg majmuna želite da userete?</h4>
+                            
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: left; margin-top: 15px;">
+                                <div>
+                                    <label>Žrtva:</label>
+                                    <select id="usraTarget"></select>
+                                </div>
+                                <div>
+                                    <label>Vrednost (Cojke Coins):</label>
+                                    <input type="number" id="usraAmount" min="1" placeholder="Unesi iznos">
+                                </div>
+                            </div>
+                            
+                            <button id="usraBtn" class="purple-btn brown-btn" style="font-size: 2em; padding: 15px;" onclick="usraMajmuna()">USERI 💩</button>
+                            <div id="usraError" style="color: #ff3333; margin-top: 10px; font-weight: bold; text-shadow: 1px 1px 2px #000;"></div>
+                            
+                            <div style="margin-top: 25px; text-align: left;">
+                                <h4 style="margin: 0; color: #d4af37; font-family: 'Oswald', sans-serif; border-bottom: 1px solid #d4af37; padding-bottom: 5px;">📜 LISTA USRANIH MAJMUNA</h4>
+                                <div class="history-container" id="usraHistoryFeed"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="side-col">
+                <div class="card" style="margin-bottom: 15px;">
+                    <h3>🏆 Leaderboard</h3>
+                    <table>
+                        <thead>
+                            <tr><th>Rank</th><th>Player</th><th>Cojke Coins</th><th>Streak</th></tr>
+                        </thead>
+                        <tbody id="leaderboardBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="card" style="text-align: center; padding: 20px;">
+                    <h3 style="font-size: 1.3em; color: #ffdf00; margin-bottom: 10px;">⏳ BETTING LOCKDOWN STATUS</h3>
+                    <div class="countdown-widget" id="countdownContainer">
+                        <div id="timeLockBanner">Loading Timeline Metrics...</div>
+                    </div>
+                </div>
+
+                <div class="card" id="pitbossPanel">
+                    <h3>🛠️ Pit Boss Panel</h3>
+                    <label>Input Today's Outcome:</label>
+                    <select id="actualOutcome">
+                        <option value="DAILY">DAILY MEETING (Happened)</option>
+                        <option value="SKIP">SKIP (Didn't happen)</option>
+                    </select>
+                    <button onclick="resolveDay()">Pay Out & Settle</button>
+                    
+                    <hr>
+                    <label>Manual Coin Adjustment</label>
+                    <select id="adjPlayer"></select>
+                    <input type="number" id="adjAmount" placeholder="e.g. 500 or -500">
+                    <button onclick="adjustCoins()" style="background: linear-gradient(to bottom, #fff, #aaa); color: #000; box-shadow: 0 6px 0 #555, 0 10px 10px rgba(0,0,0,0.5);">Adjust Balance</button>
+                    
+                    <hr>
+                    <label style="color:#d4af37;">Mini-Games Admin</label>
+                    <input type="number" id="adminJackpotAmount" placeholder="Set exact Jackpot amount">
+                    <button onclick="adminSetJackpot()" style="background: linear-gradient(to bottom, #9d00ff, #4a0080); color: white; margin-bottom: 10px;">Set Jackpot</button>
+                    <div style="display:flex; gap:10px; margin-bottom: 15px;">
+                        <button onclick="adminClearHistory('slotHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Slots</button>
+                        <button onclick="adminClearHistory('plinkoHistory')" style="background: linear-gradient(to bottom, #444, #111); color: white; font-size:0.8em; padding:10px;">Wipe Plinko</button>
+                        <button onclick="adminClearHistory('usraHistory')" style="background: linear-gradient(to bottom, #8B4513, #3d1c00); color: white; font-size:0.8em; padding:10px;">Wipe Usrane</button>
+                    </div>
+                    <hr>
+
+                    <button class="dl-btn" onclick="downloadLog()">💾 Download Full Log</button>
+                    <button class="danger-btn" onclick="nuclearReset()">Nuclear Reset</button>
+                </div>
+                <button class="cancel-btn" style="margin-top:20px; width:100%; border-radius:30px; padding:10px;" onclick="logOut()">Sign Out</button>
+            </div>
+        </div>
+        <div style="text-align: center; color: #ccc; font-size: 0.9em; font-weight: bold; padding: 20px 0; position: relative; z-index: 1;">
+            Casino Skiperino © 2026. Play irresponsibly. Property of Charlie Kirk.
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, onSnapshot, arrayUnion, arrayRemove, increment } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+          apiKey: "AIzaSyDJ0X8xHF8ys_JeiQiQs5ZP-8fcHFaNCHQ",
+          authDomain: "casino-skiperino.firebaseapp.com",
+          projectId: "casino-skiperino",
+          storageBucket: "casino-skiperino.firebasestorage.app",
+          messagingSenderId: "1045828543981",
+          appId: "1:1045828543981:web:40cf0bdd8270fee6fff3e4",
+          measurementId: "G-NS2D4EXZLL"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const ADMIN_EMAIL = "pitboss@skiperino.com"; 
+        const playersList = ["Shomara", "Nenad", "Sladja", "Cojkana", "Milance", "Danilo", "OG", "rat.cleaner", "KOL", "Markov", "Shobibi", "Skecmi"];
+        
+        let currentUser = null;
+        let currentUserPlayerName = null;
+        let isAdmin = false;
+        let isLoginMode = true;
+        let state = null; 
+        let clockInterval = null;
+        let timeOffset = 0; 
+
+        async function syncTrueTime() {
+            try {
+                const res = await fetch('https://worldtimeapi.org/api/timezone/Europe/Belgrade');
+                const data = await res.json();
+                const realTime = new Date(data.datetime).getTime();
+                timeOffset = realTime - Date.now();
+            } catch (err) {
+                console.warn("Could not sync true time, falling back to local clock.");
+            }
+        }
+        syncTrueTime();
+        
+        const initialState = {
+            balances: { "Milance": 1143.50, "Cojkana": 1096.00, "Shomara": 1058.50, "Nenad": 1037.00, "Sladja": 1006.00, "Danilo": 949.00, "rat.cleaner": 700.00, "OG": 600.90, "KOL": 600.00, "Markov": 549.00, "Shobibi": 300.00, "Skecmi": 0.00 },
+            streaks: { "Milance": 1, "Cojkana": 1, "Shomara": 1, "Nenad": 0, "Sladja": 0, "Danilo": 1, "rat.cleaner": 0, "OG": 0, "KOL": 0, "Markov": 0, "Shobibi": 0, "Skecmi": 0 }, 
+            currentDate: new Date(2026, 5, 22).getTime(), 
+            skipStreak: 1, 
+            bets: [],
+            currentOdds: { daily: "1.29", skip: "3.60" },
+            history: { 1: { total: 11, daily: 7 }, 2: { total: 11, daily: 7 }, 3: { total: 12, daily: 11 }, 4: { total: 12, daily: 7 }, 5: { total: 12, daily: 4 } },
+            chronologicalHistory: [ { date: "Mon, 15 Jun", outcome: "DAILY" }, { date: "Tue, 16 Jun", outcome: "SKIP" }, { date: "Wed, 17 Jun", outcome: "DAILY" }, { date: "Thu, 18 Jun", outcome: "DAILY" }, { date: "Fri, 19 Jun", outcome: "SKIP" } ],
+            jackpot: 500, 
+            slotHistory: [], 
+            plinkoHistory: [],
+            usraHistory: [],
+            jackpotWinners: {} 
+        };
+
+        const authPlayerSelect = document.getElementById('authPlayerName');
+        const betSelect = document.getElementById('betPlayer');
+        const adjSelect = document.getElementById('adjPlayer');
+        const usraSelect = document.getElementById('usraTarget');
+        
+        playersList.sort().forEach(p => {
+            authPlayerSelect.add(new Option(p, p));
+            betSelect.add(new Option(p, p));
+            adjSelect.add(new Option(p, p));
+            usraSelect.add(new Option(p, p));
+        });
+
+        window.toggleAuthMode = () => {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').innerText = isLoginMode ? "Enter The Vault" : "Register Operative";
+            document.getElementById('authToggleBtn').innerText = isLoginMode ? "Need an account? Register here." : "Already have clearance? Login.";
+            document.getElementById('registerFields').style.display = isLoginMode ? "none" : "block";
+            document.getElementById('authError').innerText = "";
+        };
+
+        window.handleAuth = async () => {
+            const email = document.getElementById('authEmail').value;
+            const password = document.getElementById('authPassword').value;
+            const errorDiv = document.getElementById('authError');
+            errorDiv.innerText = "";
+            try {
+                if (isLoginMode) { await signInWithEmailAndPassword(auth, email, password); } 
+                else {
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    if (email !== ADMIN_EMAIL) {
+                        const pName = document.getElementById('authPlayerName').value;
+                        await setDoc(doc(db, "users", userCredential.user.uid), { playerName: pName });
+                    }
+                }
+            } catch (error) { errorDiv.innerText = error.message; }
+        };
+
+        window.logOut = () => {
+            signOut(auth).then(() => {
+                currentUser = null; currentUserPlayerName = null; isAdmin = false; state = null;
+                if(clockInterval) clearInterval(clockInterval);
+                document.getElementById('pitbossPanel').style.display = "none";
+                document.getElementById('quotaDaily').setAttribute('readonly', 'true');
+                document.getElementById('quotaSkip').setAttribute('readonly', 'true');
+                document.getElementById('betPlayer').disabled = true;
+                document.getElementById('loginOverlay').style.display = "flex";
+                document.querySelector('.login-box').style.display = "block";
+                document.getElementById('syncingText').style.display = "none";
+                document.getElementById('appContainer').style.display = "none";
+            });
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user; isAdmin = (user.email === ADMIN_EMAIL);
+                document.querySelector('.login-box').style.display = "none";
+                document.getElementById('syncingText').style.display = "block";
+                if (!isAdmin) {
+                    const userDoc = await getDoc(doc(db, "users", user.uid));
+                    currentUserPlayerName = userDoc.exists() ? userDoc.data().playerName : "Unknown";
+                    document.getElementById('currentUserLabel').innerText = `[ Operative: ${currentUserPlayerName} ]`;
+                    document.getElementById('betPlayer').value = currentUserPlayerName;
+                } else {
+                    document.getElementById('currentUserLabel').innerText = `[ PIT BOSS MODE ]`;
+                    document.getElementById('pitbossPanel').style.display = "block";
+                    document.getElementById('betPlayer').disabled = false; 
+                    document.getElementById('quotaDaily').removeAttribute('readonly'); 
+                    document.getElementById('quotaSkip').removeAttribute('readonly');
+                }
+                startDatabaseSync();
+            } else {
+                currentUser = null;
+                document.getElementById('loginOverlay').style.display = "flex";
+                document.querySelector('.login-box').style.display = "block";
+                document.getElementById('syncingText').style.display = "none";
+                document.getElementById('appContainer').style.display = "none";
+            }
+        });
+
+        function startDatabaseSync() {
+            const stateRef = doc(db, "casino", "state");
+            onSnapshot(stateRef, async (docSnap) => {
+                if (!docSnap.exists()) {
+                    if (isAdmin) {
+                        await setDoc(stateRef, initialState);
+                        state = initialState;
+                    } else {
+                        const syncText = document.getElementById('syncingText');
+                        syncText.innerHTML = "🚨 The Pit Boss has not opened the doors yet.<br><span style='font-size: 0.6em; color: #aaa;'>Waiting for Pit Boss to initialize the casino...</span>";
+                        syncText.style.color = "#ff3333";
+                        document.getElementById('loginOverlay').style.display = "none";
+                        document.getElementById('appContainer').style.display = "flex";
+                        return;
+                    }
+                } else {
+                    state = docSnap.data();
+                    if (state.jackpot === undefined) state.jackpot = 500;
+                    if (!state.slotHistory) state.slotHistory = [];
+                    if (!state.plinkoHistory) state.plinkoHistory = [];
+                    if (!state.usraHistory) state.usraHistory = [];
+                    if (!state.jackpotWinners) state.jackpotWinners = {};
+                }
+                document.getElementById('loginOverlay').style.display = "none";
+                document.getElementById('appContainer').style.display = "flex";
+                if(clockInterval) clearInterval(clockInterval);
+                clockInterval = setInterval(renderAll, 1000);
+                renderAll();
+            });
+        }
+
+        async function pushStateToCloud() { await setDoc(doc(db, "casino", "state"), state); }
+
+        function isFeltLocked() {
+            if (!state) return true;
+            const currentGlobalTime = new Date(Date.now() + timeOffset);
+            const belgradeStr = currentGlobalTime.toLocaleString("en-US", {timeZone: "Europe/Belgrade"});
+            const belgradeTime = new Date(belgradeStr);
+            const ledgerDay = new Date(state.currentDate);
+            const isTargetDayOrLater = (
+                belgradeTime.getFullYear() > ledgerDay.getFullYear() ||
+                (belgradeTime.getFullYear() === ledgerDay.getFullYear() && belgradeTime.getMonth() > ledgerDay.getMonth()) ||
+                (belgradeTime.getFullYear() === ledgerDay.getFullYear() && belgradeTime.getMonth() === ledgerDay.getMonth() && belgradeTime.getDate() >= ledgerDay.getDate())
+            );
+            if (isTargetDayOrLater) {
+                if (belgradeTime.getDate() === ledgerDay.getDate()) {
+                    const currentMinutesSinceMidnight = (belgradeTime.getHours() * 60) + belgradeTime.getMinutes();
+                    const lockMinutesSinceMidnight = (8 * 60) + 45; 
+                    if (currentMinutesSinceMidnight >= lockMinutesSinceMidnight) return true;
+                } else { return true; }
+            }
+            return false;
+        }
+
+        window.placeBet = async () => {
+            if (isFeltLocked()) return alert("The felt is locked for today. No bets accepted.");
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const prediction = document.getElementById('betPrediction').value;
+            const amount = parseFloat(document.getElementById('betAmount').value);
+            const errorDiv = document.getElementById('betError');
+
+            if (isNaN(amount) || amount <= 0) return errorDiv.innerText = "Error: Please enter a valid amount.";
+            if (state.balances[player] < amount) return errorDiv.innerText = "Error: Insufficient Cojke Coins for " + player;
+
+            errorDiv.innerText = "";
+            const qDaily = parseFloat(state.currentOdds.daily) || 0;
+            const qSkip = parseFloat(state.currentOdds.skip) || 0;
+            const multiplier = prediction === "DAILY" ? qDaily : qSkip;
+            
+            const newBet = { id: Date.now().toString() + Math.floor(Math.random() * 1000), player: player, prediction: prediction, amount: amount, win: parseFloat((amount * multiplier).toFixed(2)) };
+            document.getElementById('betAmount').value = ""; 
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, { bets: arrayUnion(newBet), [`balances.${player}`]: increment(-amount) });
+        };
+
+        window.cancelBet = async (index) => {
+            if (isFeltLocked() && !isAdmin) return alert("Felt is locked down. Cancellations denied.");
+            const bet = state.bets[index];
+            if (!isAdmin && bet.player !== currentUserPlayerName) return alert("Security Violation.");
+            if(confirm(`Refund ${bet.amount} coins back to ${bet.player}?`)) {
+                const stateRef = doc(db, "casino", "state");
+                await updateDoc(stateRef, { bets: arrayRemove(bet), [`balances.${bet.player}`]: increment(bet.amount) });
+            }
+        };
+
+        window.resolveDay = async () => {
+            if (!isAdmin) return;
+            const actual = document.getElementById('actualOutcome').value;
+            let playersWhoBet = {};
+            state.bets.forEach(bet => {
+                if (!playersWhoBet[bet.player]) playersWhoBet[bet.player] = { won: false, lost: false };
+                if (bet.prediction === actual) { state.balances[bet.player] += bet.win; playersWhoBet[bet.player].won = true; } 
+                else { playersWhoBet[bet.player].lost = true; }
+            });
+            for (const player in playersWhoBet) {
+                if (playersWhoBet[player].lost) state.streaks[player] = 0;
+                else if (playersWhoBet[player].won) state.streaks[player] += 1;
+            }
+            state.bets = []; 
+            const dateObj = new Date(state.currentDate);
+            const dayOfWeek = dateObj.getDay();
+            if (state.history[dayOfWeek]) {
+                state.history[dayOfWeek].total += 1;
+                if (actual === "DAILY") state.history[dayOfWeek].daily += 1;
+            }
+            const dateStr = dateObj.toLocaleDateString('en-GB', { weekday: 'short', day: '2-digit', month: 'short' });
+            state.chronologicalHistory.push({ date: dateStr, outcome: actual });
+            state.skipStreak = actual === "SKIP" ? state.skipStreak + 1 : 0;
+            let d = new Date(state.currentDate);
+            d.setDate(d.getDate() + 1);
+            if (d.getDay() === 6) d.setDate(d.getDate() + 2); 
+            state.currentDate = d.getTime();
+            let baseProb = state.history[d.getDay()] ? (state.history[d.getDay()].daily / state.history[d.getDay()].total) : 0.50;
+            let p_daily = Math.max(0.05, Math.min(baseProb + (state.skipStreak * 0.10), 0.95));
+            state.currentOdds.daily = (0.95 / p_daily).toFixed(2);
+            state.currentOdds.skip = (0.95 / (1.0 - p_daily)).toFixed(2);
+            await pushStateToCloud();
+        };
+
+        window.adjustCoins = async () => {
+            if (!isAdmin) return;
+            const player = document.getElementById('adjPlayer').value;
+            const amount = parseFloat(document.getElementById('adjAmount').value);
+            if (!isNaN(amount)) {
+                state.balances[player] += amount;
+                document.getElementById('adjAmount').value = "";
+                await pushStateToCloud();
+                alert("Pit Boss Adjustment: " + player + "'s balance changed by " + amount);
+            }
+        };
+
+        window.saveOdds = async () => {
+            if (!isAdmin) return;
+            state.currentOdds.daily = document.getElementById('quotaDaily').value;
+            state.currentOdds.skip = document.getElementById('quotaSkip').value;
+            await pushStateToCloud();
+        };
+
+        window.nuclearReset = async () => {
+            if (!isAdmin) return;
+            if (confirm("☢️ WARNING: This will erase all current balances, active bets, and recent history. Are you absolutely sure?")) {
+                if (confirm("FINAL WARNING: This action cannot be undone. Initiate Nuclear Reset?")) {
+                    await setDoc(doc(db, "casino", "state"), initialState);
+                    alert("Casino has been completely reset to the baseline.");
+                }
+            }
+        };
+        
+        window.adminSetJackpot = async () => {
+            if (!isAdmin) return;
+            const amt = parseFloat(document.getElementById('adminJackpotAmount').value);
+            if (!isNaN(amt)) {
+                const stateRef = doc(db, "casino", "state");
+                await updateDoc(stateRef, { jackpot: amt });
+                document.getElementById('adminJackpotAmount').value = "";
+                alert("Jackpot manually set to " + amt);
+            }
+        };
+        
+        window.adminClearHistory = async (target) => {
+            if (!isAdmin) return;
+            if(confirm(`Da li si siguran da želiš da obrišeš ${target} log?`)) {
+                const stateRef = doc(db, "casino", "state");
+                await updateDoc(stateRef, { [target]: [] });
+            }
+        };
+
+        window.downloadLog = () => { /* Retained */ };
+
+        // ==========================================
+        // ŠOMARINE VOĆKICE (SLOT MACHINE)
+        // ==========================================
+        let isSpinning = false;
+        const allEmojis = ['🍒', '🍋', '🍉', '🍇', '💎'];
+
+        window.toggleSlotGame = () => {
+            const container = document.getElementById('slotGameContainer');
+            container.classList.toggle('open');
+            document.getElementById('toggleSlotBtn').innerText = container.classList.contains('open') ? "🔼 CLOSE SLOT MACHINE 🔼" : "✨ OPEN SLOT MACHINE ✨";
+        };
+        window.closeSlotOverlay = () => { document.getElementById('slotOverlay').style.display = "none"; };
+
+        window.spinSlots = async () => {
+            if (isSpinning || !state) return;
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const currentSlotBet = parseInt(document.getElementById('slotBetSelect').value);
+            
+            if (state.balances[player] < currentSlotBet) {
+                showSlotOverlay("💸 BROKE! 💸<br><span style='font-size:0.4em'>Insufficient Cojke Coins.</span>", "#ff3333"); return;
+            }
+
+            isSpinning = true;
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('slotBetSelect').disabled = true;
+
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, { [`balances.${player}`]: increment(-currentSlotBet) });
+
+            const r = Math.random() * 100;
+            let outcomeType = 'LOSS'; let finalSymbols = []; let multiplier = 0;
+
+            if (r < 25) { outcomeType = 'WIN'; multiplier = 1; finalSymbols = ['🍒', '🍒', '🍒']; } 
+            else if (r >= 25 && r < 37.5) { outcomeType = 'WIN'; multiplier = 2; finalSymbols = ['🍋', '🍋', '🍋']; } 
+            else if (r >= 37.5 && r < 44.17) { outcomeType = 'WIN'; multiplier = 3; finalSymbols = ['🍉', '🍉', '🍉']; } 
+            else if (r >= 44.17 && r < 48.17) { outcomeType = 'WIN'; multiplier = 5; finalSymbols = ['🍇', '🍇', '🍇']; } 
+            else if (r >= 48.17 && r < 50.17) { outcomeType = 'JACKPOT'; finalSymbols = ['💎', '💎', '💎']; } 
+            else { 
+                outcomeType = 'LOSS';
+                let s1 = allEmojis[Math.floor(Math.random() * allEmojis.length)]; let s2 = allEmojis[Math.floor(Math.random() * allEmojis.length)]; let s3 = allEmojis[Math.floor(Math.random() * allEmojis.length)];
+                while (s1 === s2 && s2 === s3) { s3 = allEmojis[Math.floor(Math.random() * allEmojis.length)]; }
+                finalSymbols = [s1, s2, s3];
+            }
+
+            const r1Elem = document.getElementById('reel1'); const r2Elem = document.getElementById('reel2'); const r3Elem = document.getElementById('reel3');
+            const r1Anim = setInterval(() => r1Elem.innerText = allEmojis[Math.floor(Math.random() * allEmojis.length)], 80);
+            const r2Anim = setInterval(() => r2Elem.innerText = allEmojis[Math.floor(Math.random() * allEmojis.length)], 80);
+            const r3Anim = setInterval(() => r3Elem.innerText = allEmojis[Math.floor(Math.random() * allEmojis.length)], 80);
+
+            setTimeout(() => { clearInterval(r1Anim); r1Elem.innerText = finalSymbols[0]; }, 1000);
+            setTimeout(() => { clearInterval(r2Anim); r2Elem.innerText = finalSymbols[1]; }, 1800);
+            setTimeout(() => { clearInterval(r3Anim); r3Elem.innerText = finalSymbols[2]; 
+                finishSlotSpin(player, outcomeType, multiplier, currentSlotBet, finalSymbols);
+            }, 2600);
+        };
+
+        async function finishSlotSpin(player, outcomeType, multiplier, currentSlotBet, finalSymbols) {
+            const stateRef = doc(db, "casino", "state");
+            const historyEntry = { player: player, amount: currentSlotBet, type: outcomeType, time: Date.now() };
+            if (finalSymbols) historyEntry.symbols = finalSymbols.join('');
+
+            if (outcomeType === 'LOSS') {
+                await updateDoc(stateRef, { jackpot: increment(currentSlotBet), slotHistory: arrayUnion(historyEntry) });
+            } else if (outcomeType === 'WIN') {
+                const winAmount = currentSlotBet * multiplier;
+                historyEntry.winAmount = winAmount;
+                await updateDoc(stateRef, { [`balances.${player}`]: increment(winAmount), slotHistory: arrayUnion(historyEntry) });
+            } else if (outcomeType === 'JACKPOT') {
+                const wonJackpot = state.jackpot || 500;
+                historyEntry.winAmount = wonJackpot;
+                await updateDoc(stateRef, { [`balances.${player}`]: increment(wonJackpot), jackpot: 500, [`jackpotWinners.${player}`]: true, slotHistory: arrayUnion(historyEntry) });
+                showSlotOverlay("💎 JACKPOT! 💎<br><span style='color:#ffdf00; font-size:0.6em'>+" + wonJackpot + " COINS!</span>", "#000");
+            }
+            isSpinning = false; document.getElementById('spinBtn').disabled = false; document.getElementById('slotBetSelect').disabled = false;
+        }
+
+        // ==========================================
+        // COJKETOVA PIRAMIDA POHLEPE (PLINKO MACHINE)
+        // ==========================================
+        
+        let plinkoInitialized = false;
+        let currentPlinkoBet = 10;
+        let currentPlinkoColor = '#FF9933';
+        let currentPlinkoName = 'Bronze';
+        
+        // Safe Space
+        const plinkoMultipliers = [14.8, 4, 2, 1.1, 0.7, 0.7, 0.7, 1.1, 2, 4, 14.8]; 
+
+        window.togglePlinkoGame = () => {
+            const container = document.getElementById('plinkoGameContainer');
+            container.classList.toggle('open');
+            document.getElementById('togglePlinkoBtn').innerText = container.classList.contains('open') ? "🔼 CLOSE PLINKO MACHINE 🔼" : "✨ OPEN PLINKO MACHINE ✨";
+            if(container.classList.contains('open') && !plinkoInitialized) {
+                drawPlinkoBoard();
+                plinkoInitialized = true;
+            }
+        };
+
+        window.setPlinkoBall = (wager, element) => {
+            currentPlinkoBet = wager;
+            const colorMap = { 
+                10: {c:'#FF9933', n:'Bronze'}, 
+                20: {c:'#FFFFFF', n:'Silver'}, 
+                30: {c:'#FFEE58', n:'Gold'}, 
+                50: {c:'#39FF14', n:'Đorđe David'}, 
+                100: {c:'#00FFFF', n:'Bajaga'} 
+            };
+            currentPlinkoColor = colorMap[wager].c;
+            currentPlinkoName = colorMap[wager].n;
+            
+            document.querySelectorAll('.ball-option').forEach(el => {
+                el.classList.remove('active');
+                el.style.borderColor = '#444';
+            });
+            element.classList.add('active');
+            element.style.borderColor = currentPlinkoColor;
+            document.getElementById('plinkoError').innerText = "";
+        };
+
+        function drawPlinkoBoard() {
+            const board = document.getElementById('plinkoBoard');
+            board.innerHTML = ""; 
+            const rows = 10;
+            const startY = 40;
+            const rowSpacing = 50;
+            const colSpacing = 45;
+            const centerX = 350; 
+
+            // High-End Glowing Pegs
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c <= r; c++) {
+                    const peg = document.createElement('div');
+                    peg.className = 'plinko-peg';
+                    const x = centerX + (c - r / 2) * colSpacing;
+                    const y = startY + r * rowSpacing;
+                    peg.style.left = `${x}px`;
+                    peg.style.top = `${y}px`;
+                    board.appendChild(peg);
+                }
+            }
+
+            for (let b = 0; b <= rows; b++) {
+                const bucket = document.createElement('div');
+                bucket.className = 'plinko-bucket';
+                const x = centerX + (b - rows / 2) * colSpacing;
+                bucket.style.left = `${x}px`;
+                bucket.style.width = `${colSpacing}px`;
+                bucket.innerText = `${plinkoMultipliers[b]}x`;
+                
+                const multi = plinkoMultipliers[b];
+                if (multi === 14.8) { bucket.style.background = 'linear-gradient(to bottom, #FF8C00, #8B0000)'; bucket.style.color = '#FFDF00'; bucket.style.borderTopColor = '#FFDF00'; }
+                else if (multi === 4) { bucket.style.background = 'linear-gradient(to bottom, #9d00ff, #4a0080)'; bucket.style.color = '#e6b3ff'; bucket.style.borderTopColor = '#d480ff'; }
+                else if (multi === 2) { bucket.style.background = 'linear-gradient(to bottom, #00A86B, #004d26)'; bucket.style.color = '#99ff99'; bucket.style.borderTopColor = '#4dff4d'; }
+                else if (multi === 1.1) { bucket.style.background = 'linear-gradient(to bottom, #444, #222)'; bucket.style.color = '#fff'; bucket.style.borderTopColor = '#aaa'; }
+                else { bucket.style.background = 'linear-gradient(to bottom, #800000, #330000)'; bucket.style.color = '#ff9999'; bucket.style.borderTopColor = '#ff3333'; }
+                
+                board.appendChild(bucket);
+            }
+        }
+
+        window.dropPlinkoBall = async () => {
+            if (!state) return;
+            const player = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const errorDiv = document.getElementById('plinkoError');
+
+            if (state.balances[player] < currentPlinkoBet) {
+                errorDiv.innerText = `Insufficient funds to buy a ${currentPlinkoName} Ball!`;
+                return;
+            }
+            errorDiv.innerText = "";
+
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, {
+                [`balances.${player}`]: increment(-currentPlinkoBet)
+            });
+
+            let path = [];
+            let bucketIndex = 0;
+            for (let i = 0; i < 10; i++) {
+                const dir = Math.random() < 0.5 ? 0 : 1; 
+                bucketIndex += dir;
+                path.push(dir);
+            }
+
+            const multiplier = plinkoMultipliers[bucketIndex];
+            const winAmount = parseFloat((currentPlinkoBet * multiplier).toFixed(2));
+
+            animatePlinkoDrop(path, bucketIndex, currentPlinkoBet, winAmount, player, currentPlinkoName, currentPlinkoColor);
+        };
+
+        async function animatePlinkoDrop(path, bucketIndex, betAmount, winAmount, player, ballName, ballColor) {
+            const board = document.getElementById('plinkoBoard');
+            const ball = document.createElement('div');
+            ball.className = 'plinko-ball';
+            
+            // Bright neon core that pops, extending out evenly
+            ball.style.background = `radial-gradient(circle at 30% 30%, #ffffff 10%, ${ballColor} 50%, ${ballColor} 90%, #333333 100%)`;
+            ball.style.color = ballColor;
+            
+            const startY = 15;
+            const centerX = 350;
+            const rowSpacing = 50;
+            const colSpacing = 45;
+
+            ball.style.top = `${startY}px`;
+            ball.style.left = `${centerX}px`;
+            board.appendChild(ball);
+
+            await new Promise(r => setTimeout(r, 20));
+
+            let currentX = centerX;
+            let currentY = startY;
+
+            for (let i = 0; i < path.length; i++) {
+                let nextX = currentX + (path[i] === 0 ? -colSpacing/2 : colSpacing/2);
+                let nextY = startY + (i + 1) * rowSpacing;
+                
+                let arcX = currentX + (path[i] === 0 ? -colSpacing/4 : colSpacing/4);
+                let arcY = currentY - 22; 
+                
+                ball.style.transition = 'top 0.11s cubic-bezier(0.2, 0.8, 0.4, 1), left 0.11s linear';
+                ball.style.top = `${arcY}px`;
+                ball.style.left = `${arcX}px`;
+                await new Promise(r => setTimeout(r, 110));
+
+                ball.style.transition = 'top 0.14s cubic-bezier(0.6, 0.04, 0.9, 0.3), left 0.14s linear';
+                ball.style.top = `${nextY}px`;
+                ball.style.left = `${nextX}px`;
+                await new Promise(r => setTimeout(r, 140));
+                
+                currentX = nextX;
+                currentY = nextY;
+            }
+
+            ball.style.transition = 'top 0.2s cubic-bezier(0.6, 0.04, 0.9, 0.3), left 0.2s linear';
+            ball.style.top = `${currentY + 40}px`;
+            await new Promise(r => setTimeout(r, 200));
+
+            const floatText = document.createElement('div');
+            floatText.className = 'floating-win';
+            floatText.innerText = winAmount > 0 ? `+${winAmount}` : 'BUST';
+            floatText.style.color = winAmount > betAmount ? '#4dff4d' : (winAmount > 0 ? '#ffdf00' : '#ff3333');
+            floatText.style.left = `${currentX}px`;
+            floatText.style.top = `${currentY - 20}px`;
+            board.appendChild(floatText);
+
+            setTimeout(() => {
+                floatText.style.top = `${currentY - 60}px`;
+                floatText.style.opacity = '0';
+            }, 50);
+
+            setTimeout(() => {
+                ball.remove();
+                floatText.remove();
+            }, 1000);
+
+            const netChange = winAmount - betAmount;
+            const historyEntry = {
+                player: player,
+                ball: ballName,
+                color: ballColor,
+                wager: betAmount,
+                multiplier: plinkoMultipliers[bucketIndex],
+                net: netChange,
+                time: Date.now()
+            };
+
+            const stateRef = doc(db, "casino", "state");
+            await updateDoc(stateRef, {
+                [`balances.${player}`]: increment(winAmount),
+                plinkoHistory: arrayUnion(historyEntry)
+            });
+        }
+
+        // ==========================================
+        // USERI MALOG MAJMUNA
+        // ==========================================
+        
+        window.toggleUsraGame = () => {
+            const container = document.getElementById('usraGameContainer');
+            container.classList.toggle('open');
+            document.getElementById('toggleUsraBtn').innerText = container.classList.contains('open') ? "🔼 CLOSE USERI MALOG MAJMUNA 🔼" : "✨ OPEN USERI MALOG MAJMUNA ✨";
+        };
+
+        window.usraMajmuna = async () => {
+            if (!state) return;
+            
+            const attacker = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            const target = document.getElementById('usraTarget').value;
+            const amount = parseFloat(document.getElementById('usraAmount').value);
+            const errorDiv = document.getElementById('usraError');
+
+            if (isNaN(amount) || amount <= 0) {
+                errorDiv.innerText = "Alo, moraš uneti pozitivan broj!";
+                return;
+            }
+            if (attacker === target) {
+                errorDiv.innerText = "Ne možeš sam sebe da usereš, majmune!";
+                return;
+            }
+            if (state.balances[attacker] < amount) {
+                errorDiv.innerText = "Nemaš dovoljno novčića za ovu sabotažu!";
+                return;
+            }
+
+            // Da li je napadač prvi na tabeli? Lider ne sme da seče ostale.
+            const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
+            if (sortedPlayers[0] === attacker && !isAdmin) {
+                errorDiv.innerText = "Ti si prvi na tabeli! Lider nema pravo da userava sirotinju.";
+                return;
+            }
+
+            errorDiv.innerText = "";
+            
+            const stateRef = doc(db, "casino", "state");
+            const historyEntry = {
+                attacker: attacker, // Ostaje zapisano u bazi za reviziju, ali UI krije
+                target: target,
+                amount: amount,
+                time: Date.now()
+            };
+
+            // Obojici se oduzima uneta vrednost u isto vreme
+            await updateDoc(stateRef, {
+                [`balances.${attacker}`]: increment(-amount),
+                [`balances.${target}`]: increment(-amount),
+                usraHistory: arrayUnion(historyEntry)
+            });
+
+            document.getElementById('usraAmount').value = '';
+        };
+
+        // MAIN RENDER LOOP 
+        function renderAll() {
+            if(!state) return;
+            
+            // SIDEBAR TIMER
+            const banner = document.getElementById('timeLockBanner');
+            const placeBtn = document.getElementById('placeBetBtn');
+            const locked = isFeltLocked();
+
+            if (locked) {
+                banner.innerHTML = `<div class="lock-notice-box">🚨 FELT LOCKED<br><span style="font-size:0.6em; color:#aaa; font-weight:normal;">Bets Closed at 8:45 AM Belgrade Time</span></div>`;
+                placeBtn.disabled = true; placeBtn.innerText = "FELT LOCKED";
+            } else {
+                const bNow = new Date(new Date(Date.now() + timeOffset).toLocaleString("en-US", {timeZone: "Europe/Belgrade"}));
+                const ledgerDay = new Date(state.currentDate);
+                const bTarget = new Date(ledgerDay.getFullYear(), ledgerDay.getMonth(), ledgerDay.getDate(), 8, 45, 0);
+                let diff = bTarget - bNow; if (diff < 0) diff = 0;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const secs = Math.floor((diff % (1000 * 60)) / 1000);
+                
+                banner.innerHTML = `
+                    <div style="font-size:0.75em; color:#aaa;">TIME REMAINING UNTIL LOCK</div>
+                    <div class="timer-digits">${days.toString().padStart(2, '0')}:${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}</div>
+                    <div style="font-size:0.55em; color:#666; margin-top:3px; font-weight:normal;">DAYS : HOURS : MINUTES : SECONDS</div>
+                `;
+                placeBtn.disabled = false; placeBtn.innerText = "Place Bet on Felt";
+            }
+            
+            // PAST 5 DAYS TREND
+            const last5 = state.chronologicalHistory.slice(-5);
+            document.getElementById('past5container').innerHTML = last5.map(item => 
+                `<div class="history-badge ${item.outcome === 'SKIP' ? 'history-skip' : 'history-daily'}">${item.outcome}<span class="history-date">${item.date}</span></div>`
+            ).join('');
+            
+            const d = new Date(state.currentDate);
+            document.getElementById('displayDate').innerText = "📅 " + d.toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' });
+            document.getElementById('displayStreak').innerText = state.skipStreak;
+            
+            if(document.activeElement !== document.getElementById('quotaDaily')) document.getElementById('quotaDaily').value = state.currentOdds.daily;
+            if(document.activeElement !== document.getElementById('quotaSkip')) document.getElementById('quotaSkip').value = state.currentOdds.skip;
+
+            if(isAdmin) {
+                document.getElementById('quotaDaily').addEventListener('input', saveOdds);
+                document.getElementById('quotaSkip').addEventListener('input', saveOdds);
+            }
+
+            // LEADERBOARD RENDER
+            const sortedPlayers = Object.keys(state.balances).sort((a, b) => state.balances[b] - state.balances[a]);
+            const tbodyL = document.getElementById('leaderboardBody');
+            tbodyL.innerHTML = sortedPlayers.map((p, index) => {
+                const rankDisplay = index === 0 ? "👑 1" : (index + 1);
+                const streak = state.streaks[p] || 0;
+                let streakDisplay = streak >= 3 ? `🔥 ${streak}` : streak;
+                const hasJackpot = state.jackpotWinners && state.jackpotWinners[p] ? " 🎰" : "";
+                return `<tr>
+                    <td>${rankDisplay}</td>
+                    <td>${p}${hasJackpot}</td>
+                    <td><span class="coin-icon">🪙</span>${state.balances[p].toFixed(2)}</td>
+                    <td style="color: ${streak > 0 ? '#4dff4d' : '#fff'}; font-weight: bold;">${streakDisplay}</td>
+                </tr>`;
+            }).join('');
+
+            // ACTIVE BETS RENDER
+            const tbodyB = document.getElementById('betsTableBody');
+            if (state.bets.length === 0) {
+                tbodyB.innerHTML = `<tr><td colspan="5" style="color: rgba(255, 255, 255, 0.4); text-align: center; padding: 20px;">No chips on the felt. Place your bets.</td></tr>`;
+            } else {
+                tbodyB.innerHTML = state.bets.map((b, index) => `
+                    <tr>
+                        <td>${b.player}</td>
+                        <td style="color: ${b.prediction === 'DAILY' ? '#4dff4d' : '#ff4d4d'}; font-weight: bold;">${b.prediction}</td>
+                        <td>${b.amount}</td>
+                        <td>${b.win}</td>
+                        <td>${(isAdmin || (b.player === currentUserPlayerName && !locked)) ? `<button class="cancel-btn" onclick="cancelBet(${index})">Refund</button>` : `<span style="color:rgba(255,255,255,0.4); font-size:0.85em;">Locked</span>`}</td>
+                    </tr>`).join('');
+            }
+
+            // UI BALANCE RENDER FOR MINIGAMES
+            const displayPlayer = isAdmin ? document.getElementById('betPlayer').value : currentUserPlayerName;
+            if(displayPlayer) {
+                document.getElementById('slotPlayerBalance').innerText = state.balances[displayPlayer].toFixed(2);
+                document.getElementById('plinkoPlayerBalance').innerText = state.balances[displayPlayer].toFixed(2);
+            }
+            
+            // SLOT MACHINE RENDER
+            document.getElementById('slotJackpotText').innerText = (state.jackpot || 500).toFixed(2);
+            const slotFeed = document.getElementById('slotHistoryFeed');
+            if (state.slotHistory && state.slotHistory.length > 0) {
+                const recentSlot = [...state.slotHistory].slice(-15).reverse();
+                slotFeed.innerHTML = recentSlot.map(h => {
+                    let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>${h.player}</strong> `;
+                    if (h.type === 'LOSS') entry += `<span class="sh-loss">spun ${h.amount} coins and LOST.</span>`;
+                    else if (h.type === 'WIN') entry += `<span class="sh-win">hit ${h.symbols || 'winning fruits'} for ${h.winAmount} coins!</span>`;
+                    else if (h.type === 'JACKPOT') entry += `<span class="sh-jackpot">HIT THE MEGA DIAMOND JACKPOT OF ${h.winAmount} COINS!</span>`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                }).join('');
+            } else { slotFeed.innerHTML = "<div style='color: #888; text-align:center;'>No spins yet. The jackpot is waiting.</div>"; }
+
+            // PLINKO MACHINE RENDER
+            const plinkoFeed = document.getElementById('plinkoHistoryFeed');
+            if (state.plinkoHistory && state.plinkoHistory.length > 0) {
+                const recentPlinko = [...state.plinkoHistory].slice(-15).reverse();
+                plinkoFeed.innerHTML = recentPlinko.map(h => {
+                    let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>${h.player}</strong> dropped a <span style="color:${h.color}; font-weight:bold;">${h.ball} Ball</span> `;
+                    if (h.net > 0) entry += `and won <span class="sh-win">+${h.net.toFixed(2)}</span> coins! (${h.multiplier}x)`;
+                    else if (h.net === 0) entry += `and broke even. (${h.multiplier}x)`;
+                    else entry += `and lost <span class="sh-loss">${Math.abs(h.net).toFixed(2)}</span> coins. (${h.multiplier}x)`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                }).join('');
+            } else { plinkoFeed.innerHTML = "<div style='color: #888; text-align:center;'>The pyramid is quiet. Drop a ball!</div>"; }
+
+            // USERI MALOG MAJMUNA RENDER
+            const usraFeed = document.getElementById('usraHistoryFeed');
+            if (state.usraHistory && state.usraHistory.length > 0) {
+                const recentUsra = [...state.usraHistory].slice(-15).reverse();
+                usraFeed.innerHTML = recentUsra.map(h => {
+                    let entry = `[${new Date(h.time).toLocaleTimeString()}] <strong>[Anonymous]</strong> je usrao <strong>${h.target}</strong> za <span class="sh-loss">${h.amount}</span> novčića.`;
+                    return `<div style="padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.1);">${entry}</div>`;
+                }).join('');
+            } else { usraFeed.innerHTML = "<div style='color: #888; text-align:center;'>Niko još nije usran. Mir u ofisu.</div>"; }
+        }
+    </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino Skiperino - High Stakes Daily Betting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700&family=Playfair+Display:ital,wght@0,700;1,700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- CLASSIC VEGAS CASINO DESIGN --- */
+        body { color: #ffffff; font-family: 'Roboto', sans-serif; margin: 0; padding: 20px; position: relative; min-height: 100vh; background-color: #1a0505; }
+        body::before { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Charlie_Kirk_by_Gage_Skidmore_2.jpg/800px-Charlie_Kirk_by_Gage_Skidmore_2.jpg'); background-size: cover; background-position: center 20%; opacity: 0.15; filter: sepia(0.8) hue-rotate(-15deg) saturate(1.5) brightness(0.6); z-index: -2; }
+        body::after { content: ""; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at center, transparent 0%, #0d0202 80%); z-index: -1; pointer-events: none; }
+
+        h1, h2, h3 { font-family: 'Oswald', sans-serif; text-transform: uppercase; text-align: center; margin-top: 0; }
+        h1 { font-family: 'Playfair Display', serif; font-style: italic; color: #ffdf00; font-size: 4em; font-weight: 700; text-shadow: 2px 2px 0px #8b0000, 4px 4px 0px #000, 0 0 20px #ffdf00; margin-bottom: 5px; position: relative; z-index: 1; letter-spacing: 2px; }
+        h1::before, h1::after { content: '♦ ♣ ♥ ♠'; font-size: 0.3em; color: #ff0000; text-shadow: 0 0 5px #ff0000, 1px 1px 0 #000; vertical-align: middle; margin: 0 15px; font-style: normal; }
+        h3 { color: #ffdf00; font-size: 1.6em; border-bottom: 2px dashed #d4af37; padding-bottom: 10px; margin-bottom: 20px; letter-spacing: 1px; text-shadow: 1px 1px 3px #000; }
+        hr { border: 1px solid #d4af37; margin: 25px 0; opacity: 0.4; }
+
+        .container { display: none; gap: 25px; max-width: 1300px; margin: 0 auto; position: relative; z-index: 1; }
+        .main-col { flex: 2.2; min-width: 0; }
+        .side-col { flex: 1; min-width: 0; }
+
+        .card { background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px), radial-gradient(circle at center, #155e24 0%, #062b0f 100%); padding: 25px; border-radius: 15px; margin-bottom: 25px; border: 4px solid #d4af37; box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 10px 20px rgba(0,0,0,0.7), 0 0 0 6px #3d1c00; position: relative; }
+        .history-badge { display: inline-block; padding: 8px 15px; margin: 5px; border-radius: 5px; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; color: #fff; box-shadow: inset 0 0 5px rgba(0,0,0,0.5), 0 2px 4px #000; font-size: 1.1em; min-width: 80px; text-align: center; border: 2px solid #fff; }
+        .history-skip { background: radial-gradient(circle, #ff3333 0%, #990000 100%); }
+        .history-daily { background: radial-gradient(circle, #33cc33 0%, #006600 100%); }
+        .history-date { font-size: 0.7em; display: block; color: #e0e0e0; margin-top: 2px; font-weight: normal; }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 1em; }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.3); }
+        th { background-color: rgba(0, 0, 0, 0.4); color: #ffdf00; font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: 1px; border-top: 2px solid #d4af37; border-bottom: 2px solid #d4af37; }
+        tr:nth-child(even) { background-color: rgba(0, 0, 0, 0.2); }
+        tr:hover td { background-color: rgba(212, 175, 55, 0.1) !important; color: #ffdf00;}
+
+        label { font-family: 'Oswald', sans-serif; text-transform: uppercase; color: #d4af37; font-size: 0.9em; display: block; margin-bottom: 5px; text-shadow: 1px 1px 2px #000; }
+        input, select { width: 100%; padding: 12px; margin-bottom: 20px; box-sizing: border-box; background-color: #041a0a; color: #fff; border: 2px solid #d4af37; border-radius: 4px; font-family: 'Roboto', sans-serif; font-size: 1em; box-shadow: inset 0 2px 5px #000; }
+        input:focus, select:focus { outline: none; border-color: #ffdf00; box-shadow: 0 0 10px rgba(255, 223, 0, 0.5); }
+
+        button { background: linear-gradient(to bottom, #ffea00, #b8860b); color: #2b0000; font-family: 'Oswald', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; border: 2px solid #fff; border-radius: 50px; padding: 15px 20px; cursor: pointer; width: 100%; font-size: 1.2em; transition: all 0.1s ease; box-shadow: 0 6px 0 #7a5905, 0 10px 10px rgba(0,0,0,0.5); }
+        button:hover { filter: brightness(1.1); transform: translateY(2px); box-shadow: 0 4px 0 #7a5905, 0 5px 5px rgba(0,0,0,0.5); }
+        button:active { transform: translateY(6px); box-shadow: 0 0 0 #7a5905, 0 2px 2px rgba(0,0,0,0.5); }
+        button:disabled { background: #444; border-color: #666; color: #888; box-shadow: none; cursor: not-allowed; transform: none !important; filter: none !important; }
+
+        .dl-btn { background: linear-gradient(to bottom, #292929, #000000); color: #ffdf00; border-color: #d4af37; box-shadow: 0 6px 0 #000, 0 10px 10px rgba(0,0,0,0.5); margin-top: 10px; font-size: 0.9em; }
+        .dl-btn:hover { box-shadow: 0 4px 0 #000, 0 5px 5px rgba(0,0,0,0.5); }
+        .danger-btn { background: linear-gradient(to bottom, #ff3333, #990000); color: white; border-color: #ffcccc; box-shadow: 0 6px 0 #4d0000, 0 10px 10px rgba(0,0,0,0.5); margin-top: 20px; font-size: 0.9em; }
+        .danger-btn:hover { box-shadow: 0 4px 0 #4d0000, 0 5px 5px rgba(0,0,0,0.5); }
+        .cancel-btn { background: linear-gradient(to bottom, #ff3333, #990000); color: white; border: 1px solid #ffcccc; border-radius: 4px; padding: 5px 10px; cursor: pointer; font-size: 0.8em; width: auto; box-shadow: 0 2px 0 #4d0000; margin: 0; letter-spacing: 0.5px; }
+        .cancel-btn:hover { filter: brightness(1.2); transform: translateY(1px); box-shadow: 0 1px 0 #4d0000; }
+        .cancel-btn:active { transform: translateY(2px); box-shadow: none; }
+
+        .header-subtitle { text-align: center; font-weight: bold; font-size: 1.2em; color: #d4af37; margin-bottom: 30px; text-shadow: 1px 1px 2px #000; position: relative; z-index: 1; }
+        .streak-counter { color: #fff; background: rgba(0, 0, 0, 0.6); padding: 10px 20px; border-radius: 20px; border: 1px solid #d4af37; display: inline-block; box-shadow: inset 0 0 10px #000; }
+        .streak-number { color: #ff3333; font-weight: bold; font-size: 1.2em; text-shadow: 0 0 10px #ff0000; }
+
+        .countdown-widget { background: radial-gradient(circle, #1a1a1a 0%, #000000 100%); padding: 15px; border-radius: 8px; border: 2px solid #d4af37; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); margin-top: 10px; }
+        .timer-digits { font-family: 'Oswald', sans-serif; font-size: 2.2em; color: #ffffff; letter-spacing: 2px; text-shadow: 0 0 10px rgba(255, 223, 0, 0.4); margin-top: 5px; font-weight: 700; }
+        .lock-notice-box { color: #ff3333; font-family: 'Oswald', sans-serif; font-weight: bold; font-size: 1.4em; letter-spacing: 1px; text-shadow: 0 0 10px rgba(255,0,0,0.4); text-transform: uppercase; padding: 10px 0; }
+
+        .odds-container { display: flex; gap: 15px; justify-content: space-around; margin-top: 20px; }
+        .odds-box { flex: 1; background: radial-gradient(circle, #1a1a1a 0%, #000000 100%); padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #d4af37; box-shadow: inset 0 0 15px rgba(212, 175, 55, 0.2), 0 5px 10px rgba(0,0,0,0.5); }
+        .odds-label { font-family: 'Oswald', sans-serif; text-transform: uppercase; font-size: 1em; color: #d4af37; margin-bottom: 10px; letter-spacing: 1px; }
+        .odds-value { display: flex; justify-content: center; align-items: baseline; color: #fff; font-size: 3.5em; font-weight: 700; font-family: 'Oswald', sans-serif; text-shadow: 2px 2px 0 #000, 0 0 15px rgba(255, 223, 0, 0.5); line-height: 1; }
+        .odds-input { background: transparent; border: none; border-bottom: 2px dashed #d4af37; color: #fff; font-size: 1em; font-weight: 700; font-family: inherit; text-shadow: inherit; text-align: center; width: 130px; padding: 0; margin: 0; outline: none; transition: all 0.2s; }
+        .odds-input:focus { border-bottom-color: #ffdf00; background: rgba(255, 255, 255, 0.05); }
+        .odds-input::-webkit-outer-spin-button, .odds-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        .odds-input[type=number] { -moz-appearance: textfield; }
+        .odds-input[readonly] { border-bottom: none; }
+        .odds-x { font-size: 0.5em; color: #ffdf00; margin-left: 5px; }
+        .coin-icon { color: #ffdf00; margin-right: 5px; }
+
+        #loginOverlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #0c0202; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .login-box { background: radial-gradient(circle at center, #155e24 0%, #062b0f 100%); padding: 40px; border: 4px solid #caa43b; border-radius: 15px; width: 350px; text-align: center; box-shadow: inset 0 0 30px rgba(0,0,0,0.8), 0 10px 30px #000; }
+        .auth-toggle { color: #fff; margin-top: 15px; cursor: pointer; text-decoration: underline; font-size: 0.9em; text-shadow: 1px 1px 2px #000;}
+        #pitbossPanel { display: none; }
+        .loading-text { color: #ffdf00; font-family: 'Oswald', sans-serif; font-size: 1.5em; display: none; text-shadow: 0 0 10px #ffdf00; }
+
+        /* --- MINI-GAMES SHARED STYLES --- */
+        .purple-btn { background: linear-gradient(to bottom, #9d00ff, #4a0080); color: #fff; border-color: #d480ff; box-shadow: 0 6px 0 #2a004d, 0 10px 10px rgba(0,0,0,0.5); margin-top: 10px; font-size: 1.4em; text-shadow: 0 0 10px #e6b3ff; }
+        .purple-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2a004d, 0 5px 5px rgba(0,0,0,0.5); }
+        .purple-btn:active { transform: translateY(6px); box-shadow: none; }
+        
+        .brown-btn { background: linear-gradient(to bottom, #8B4513, #3d1c00) !important; border-color: #A0522D !important; box-shadow: 0 6px 0 #2b1400, 0 10px 10px rgba(0,0,0,0.5) !important; text-shadow: 1px 1px 2px #000 !important; }
+        .brown-btn:hover { filter: brightness(1.2); transform: translateY(2px); box-shadow: 0 4px 0 #2b1400, 0 5px 5px rgba(0,0,0,0.5) !important; }
+        .brown-btn:active { transform: translateY(6px); box-shadow: none !important; }
+
+        .collapse-container { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
+        .collapse-container.open { max-height: 1400px; opacity: 1; }
+        .history-container { max-height: 150px; overflow-y: auto; background: rgba(0,0,0,0.8); border: 1px solid #d4af37; border-radius: 5px; padding: 10px; text-align: left; font-size: 0.9em; margin-top: 20px; }
+        .history-container::-webkit-scrollbar { width: 8px; }
+        .history-container::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 4px; }
+        .sh-win { color: #4dff4d; }
+        .sh-loss { color: #ff4d4d; }
+        .sh-jackpot { color: #ffdf00; font-weight: bold; text-shadow: 0 0 5px #ffdf00; }
+        
         #slotOverlay { display: none; position: absolute; top:0; left:0; right:0; bottom:0; background: rgba(0,0,0,0.9); z-index: 10; border-radius: 15px; align-items: center; justify-content: center; flex-direction: column; text-align: center; padding: 20px;}
         .overlay-text { font-family: 'Oswald', sans-serif; font-size: 3em; font-weight: 700; text-align: center; margin-bottom: 20px; }
 
